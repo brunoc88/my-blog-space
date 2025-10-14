@@ -7,7 +7,6 @@ exports.crearUser = async (req, res, next) => {
     const {
       userName,
       email,
-      imagen,
       respuesta,
       pregunta,
       password

@@ -35,6 +35,22 @@ describe('/api/user/registro', () => {
     expect(res.body.msj).toContain('Usuario guardado!')
   })
 
+  test('Error de validacion', async () => {
+    const user = {
+      userName: 'bru',
+      email: 'bruno88@gmail.com',
+      pregunta: 'nombre de mascota',
+      respuesta: 'cecilio',
+      password: '12'
+    }
+
+    const res = await api
+      .post('/api/user/registro')
+      .send(user)
+      .expect(400)
+
+    expect(res.body).toHaveProperty('error')
+  })
 })
 
 afterAll(async () => {
