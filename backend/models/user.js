@@ -1,23 +1,28 @@
 const mongoose = require('mongoose')
+const validator = require('validator')
 
 const userSchema = mongoose.Schema({
     userName: {
         type: String,
         required: true,
         unique: true,
-        maxLength: 15,
-        minLenght: 5
+        maxlength: 15,
+        minlength: 5
     },
     email: {
         type: String,
         required: true,
         unique: true,
+        validate: {
+            validator: validator.isEmail,
+            message: 'Email no válido'
+        }
     },
-    password:{
+    password: {
         type: String,
         required: true,
-        maxLength:15,
-        minLenght:6
+        maxlength: 15,
+        minlength: 6
     },
     pregunta: {
         type: String,
@@ -26,7 +31,7 @@ const userSchema = mongoose.Schema({
     respuesta: {
         type: String,
         required: true,
-        maxLength: 30,
+        maxlength: 30,
         minlength: 5
     },
     imagen: {
@@ -44,7 +49,6 @@ userSchema.set('toJSON', {
         returnedObject.id = returnedObject._id.toString()
         delete returnedObject._id
         delete returnedObject.__v
-        // el passwordHash no debe mostrarse
         delete returnedObject.password
     }
 })
