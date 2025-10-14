@@ -5,13 +5,14 @@
   "scripts": {
     "start": "cross-env NODE_ENV=start node index.js",
     "dev": "cross-env NODE_ENV=dev nodemon index.js",
-    "test": "cross-env NODE_ENV=test"
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "mongoose": "^8.19.1",

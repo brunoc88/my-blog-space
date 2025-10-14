@@ -21,7 +21,6 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: true,
-        maxlength: 15,
         minlength: 6
     },
     pregunta: {
