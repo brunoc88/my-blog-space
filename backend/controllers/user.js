@@ -2,7 +2,7 @@ const User = require('../models/user')
 const bcrypt = require('bcrypt')
 
 exports.crearUser = async (req, res, next) => {
-   console.log(req.body)
+  
   try {
     const {
       userName,
@@ -30,7 +30,6 @@ exports.crearUser = async (req, res, next) => {
       user: savedUser
     })
   } catch (error) {
-    console.log('❌ ERROR:', error)
     next(error)
   }
 }

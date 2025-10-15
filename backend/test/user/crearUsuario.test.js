@@ -15,42 +15,30 @@ beforeEach(async () => {
 })
 
 describe('/api/user/registro', () => {
-  test('creando usuario sin imagen', async () => {
-    const user = {
-      userName: 'bruno88',
-      email: 'bruno88@gmail.com',
-      pregunta: 'nombre de mascota',
-      respuesta: 'cecilio',
-      password: '123456'
-    }
+  describe('Validaciones de userName', () => {
+    test('Validaciones de userName', async () => {
+      const user = {
+        userName: 'brun',
+        email: 'bruno@gmail.com',
+        pregunta: 'Videojuego Favorito?',
+        respuesta: 'Resident evil',
+        password: '123456',
+        password2: '123456'
+      }
 
-    const res = await api
-      .post('/api/user/registro')
-      .send(user)
-      .expect(201)
+      const res = await api
+        .post('/api/user/registro')
+        .send(user)
+        .expect(400)
 
-    
-    expect(res.body).toHaveProperty('msj')
-    expect(res.body).toHaveProperty('user')
-    expect(res.body.msj).toContain('Usuario guardado!')
+      expect(res.body).toHaveProperty('error')
+      expect(res.body.error).not.toBeNull()
+      expect(res.body.error).toHaveProperty('userName')
+      expect(res.body.error.userName).toBe('Mínimo 5 caracteres')
+
+    })
   })
 
-  test('Error de validacion', async () => {
-    const user = {
-      userName: 'bru',
-      email: 'bruno88@gmail.com',
-      pregunta: 'nombre de mascota',
-      respuesta: 'cecilio',
-      password: '12'
-    }
-
-    const res = await api
-      .post('/api/user/registro')
-      .send(user)
-      .expect(400)
-
-    expect(res.body).toHaveProperty('error')
-  })
 })
 
 afterAll(async () => {
