@@ -39,7 +39,7 @@ const respuestaValidations = (respuesta) => {
 
 const claveValidation = (clave) => {
     const { KEY } = require('../config')
-    if (!clave) {
+    if (!clave || clave.length === 0) {
         return 'Ingrese la clave'
     } else if (clave !== KEY) {
         return 'Clave incorrecta'

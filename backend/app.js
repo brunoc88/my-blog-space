@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-
+const path = require('path')
 
 //importacion de middlewares
 const unknowEndpoint = require('./middlewares/unknowEndpoint')
@@ -12,7 +12,7 @@ const userRouter = require('./routes/user')
 
 
 //aplicacion de middlewares
-
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')))
 app.use(express.json())
 
 if(process.env.NODE_ENV === 'dev'){

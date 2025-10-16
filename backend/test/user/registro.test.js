@@ -4,6 +4,9 @@ const supertest = require('supertest')
 const User = require('../../models/user')
 const api = supertest(app)
 const { MONGODB_URI } = require('../../utils/config')
+const path = require('path') // Necesario para ruta a la imagen
+const fs = require('fs')
+const uploadDir = path.join(__dirname, '../../public/uploads')
 
 // como levantabamos la DB en index hacemos uso de beforeAll
 beforeAll(async () => {
@@ -366,7 +369,7 @@ describe('/api/user/registro', () => {
     })
   })
 
-  describe.only('Registro correcto de usuario', () => {
+  describe('Registro correcto de usuario comun', () => {
     test('Registro sin imagen', async () => {
       let user = {
         userName: 'bruno88',
@@ -374,7 +377,8 @@ describe('/api/user/registro', () => {
         pregunta: 'videojuego favorito?',
         respuesta: 'Resident Evil',
         password: '123456',
-        password2: '123456'
+        password2: '123456',
+        imagen: ''
       }
 
       const res = await api
@@ -387,11 +391,109 @@ describe('/api/user/registro', () => {
       expect(res.body).toHaveProperty('user')
       expect(res.body.msj).toBe('Usuario guardado!')
     })
+
+    test('Registro con imagen', async () => {
+      await api
+        .post('/api/user/registro')
+        .field('userName', 'usuarioImg')
+        .field('email', 'imguser@example.com')
+        .field('password', 'miPassword123')
+        .field('pregunta', 'Resident Evil Favorito?')
+        .field('respuesta', 'RE3 Nemesis')
+        .attach('imagen', path.join(__dirname, 'fixtures', 'test-imagen.png')) // nombre del campo debe coincidir con el de multer
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+    })
   })
 
+  describe('Duplicados', () => {
+    test('Duplicado de email', async () => {
+      let user = {
+        userName: 'bruno88',
+        email: 'brunoc88@gmail.com',
+        pregunta: 'videojuego favorito?',
+        respuesta: 'Resident Evil',
+        password: '123456',
+        password2: '123456',
+        imagen: ''
+      }
+
+      let user2 = {
+        userName: 'jose99',
+        email: 'brunoc88@gmail.com',
+        pregunta: 'videojuego favorito?',
+        respuesta: 'Resident Evil',
+        password: '123456',
+        password2: '123456',
+        imagen: ''
+      }
+
+      await api.post('/api/user/registro').send(user)
+      const res = await api
+        .post('/api/user/registro')
+        .send(user2)
+        .expect(400)
+
+      expect(res.body).toHaveProperty('error')
+      expect(res.body.error).toContain(`El email '${user.email}' ya está registrado`)
+    })
+  })
 })
 
+describe('/api/user/registro/:admin', () => {
+  describe('Validaciones de clave secreta', () => {
+    test('Clave secreta vacia', async () => {
+      const user = {
+        userName: 'bruno88',
+        email: 'bruno@gmail.com',
+        pregunta: 'Videojuego Favorito?',
+        respuesta: 'Resident evil',
+        password: '123456',
+        password2: '123456',
+        clave: ''
+      }
 
+      const res = await api
+      .post('/api/user/registro/:admin')
+      .send(user)
+      .expect(400)
+
+      expect(res.body).toHaveProperty('error')
+      expect(res.body.error).toHaveProperty('clave')
+      expect(res.body.error.clave).toBe('Ingrese la clave')
+    })
+
+     test('Clave secreta incorrecta', async () => {
+      const user = {
+        userName: 'bruno88',
+        email: 'bruno@gmail.com',
+        pregunta: 'Videojuego Favorito?',
+        respuesta: 'Resident evil',
+        password: '123456',
+        password2: '123456',
+        clave: 'extremadamente_dulce'
+      }
+
+      const res = await api
+      .post('/api/user/registro/:admin')
+      .send(user)
+      .expect(400)
+
+      expect(res.body).toHaveProperty('error')
+      expect(res.body.error).toHaveProperty('clave')
+      expect(res.body.error.clave).toBe('Clave incorrecta')
+    })
+  })
+})
+
+afterEach(() => {
+  // Limpias la carpeta uploads para que no acumule imágenes de tests
+  fs.readdirSync(uploadDir).forEach(file => {
+    if (file !== 'default.png') {
+      fs.unlinkSync(path.join(uploadDir, file))
+    }
+  })
+})
 
 afterAll(async () => {
   await mongoose.connection.close()
