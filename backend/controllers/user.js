@@ -1,6 +1,6 @@
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
-const { KEY } = require('../utils/config')
+
 exports.crearUser = async (req, res, next) => {
   try {
     const {
