@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt')
 
 // user comun
 exports.crearUser = async (req, res, next) => {
-  console.log('🧩 BODY RECIBIDO:', req.body)
   try {
     const {
       userName,
@@ -32,7 +31,6 @@ exports.crearUser = async (req, res, next) => {
       user: savedUser
     })
   } catch (error) {
-    console.log('❌ ERROR EN CREAR USER:', error)
     next(error)
   }
 }
