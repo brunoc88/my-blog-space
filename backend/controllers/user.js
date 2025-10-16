@@ -2,6 +2,7 @@ const User = require('../models/user')
 const bcrypt = require('bcrypt')
 
 exports.crearUser = async (req, res, next) => {
+  const admin = req.params.admin
   try {
     const {
       userName,
@@ -19,7 +20,7 @@ exports.crearUser = async (req, res, next) => {
       imagen: req.file ? req.file.filename : 'default.png',
       respuesta,
       pregunta,
-      rol: req.params.admin === 'admin' && req.body.clave === process.env.KEY
+      rol: admin && req.body.clave === process.env.KEY
         ? 'admin'
         : 'comun'
       ,

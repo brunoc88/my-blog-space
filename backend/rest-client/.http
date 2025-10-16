@@ -1,0 +1,34 @@
+POST http://localhost:3000/api/user/registro/admin
+Content-Type: application/json
+
+{
+    "userName":"bruno88",
+    "email":"brunocerutti88@gmail.com",
+    "pregunta":"videojuego favorito?",
+    "respuesta": "resident evil",
+    "imagen":"",
+    "password":"sekret",
+    "password2":"sekret",
+    "clave":"ULTRASALADA"
+}
+###
+POST http://localhost:3000/api/user/registro
+Content-Type: application/json
+
+{
+    "userName":"faker",
+    "email":"faker12@gmail.com",
+    "pregunta":"videojuego favorito?",
+    "respuesta": "resident evil",
+    "imagen":"",
+    "password":"sekret",
+    "password2":"sekret"
+}
+###
+POST http://localhost:3000/api/login
+Content-Type: application/json
+
+{
+    "user":"fake",
+    "password":"sekret"
+}

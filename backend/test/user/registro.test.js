@@ -17,7 +17,7 @@ beforeEach(async () => {
   await User.deleteMany({})
 })
 
-describe('/api/user/registro', () => {
+describe('POST /api/user/registro', () => {
   describe('Validaciones de userName', () => {
     test('userName menor a 5 caracteres', async () => {
       const user = {
@@ -440,7 +440,7 @@ describe('/api/user/registro', () => {
   })
 })
 
-describe('/api/user/registro/:admin', () => {
+describe('POST /api/user/registro/:admin', () => {
   describe('Validaciones de clave secreta', () => {
     test('Clave secreta vacia', async () => {
       const user = {

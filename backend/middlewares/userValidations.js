@@ -65,7 +65,7 @@ const userValidations = (req, res, next) => {
 
     if ('clave' in req.body) {
         const { clave } = req.body
-        const claveError = claveValidation(clave.trim().toLowerCase())
+        const claveError = claveValidation(clave.trim())
         if(claveError) errores.clave = claveError
     }
 

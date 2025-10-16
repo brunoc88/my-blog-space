@@ -1,9 +1,13 @@
 const rateLimit = require('express-rate-limit')
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100, // max 100 requests por IP en 15 minutos
-  message: 'Demasiadas peticiones, intenta más tarde.'
+  windowMs: 5 * 60 * 1000, // 5 minutos
+  max: 5, // máximo 5 intentos por IP cada 5 minutos
+  message: {
+    error: 'Demasiadas solicitudes, intenta nuevamente en unos minutos.'
+  },
+  standardHeaders: true, // devuelve RateLimit-* headers
+  legacyHeaders: false, // desactiva X-RateLimit-* headers antiguos
 })
 
 module.exports = limiter
