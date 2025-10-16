@@ -2,8 +2,8 @@ POST http://localhost:3000/api/user/registro/admin
 Content-Type: application/json
 
 {
-    "userName":"bruno88",
-    "email":"brunocerutti88@gmail.com",
+    "userName":"faker88",
+    "email":"faker88@gmail.com",
     "pregunta":"videojuego favorito?",
     "respuesta": "resident evil",
     "imagen":"",
@@ -31,4 +31,18 @@ Content-Type: application/json
 {
     "user":"fake",
     "password":"sekret"
+}
+
+###
+POST http://localhost:3000/api/user/registro/
+Content-Type: application/json
+
+{
+    "userName":"",
+    "email":"",
+    "pregunta":"",
+    "respuesta": "",
+    "imagen":"",
+    "password":"",
+    "password2":""
 }
