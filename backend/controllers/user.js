@@ -1,8 +1,9 @@
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
 
+// user comun
 exports.crearUser = async (req, res, next) => {
-  
+  console.log('🧩 BODY RECIBIDO:', req.body)
   try {
     const {
       userName,
@@ -20,6 +21,7 @@ exports.crearUser = async (req, res, next) => {
       imagen: req.file ? req.file.filename : 'default.png',
       respuesta,
       pregunta,
+      rol:'comun',
       password: passwordHashed
     })
 
@@ -30,6 +32,7 @@ exports.crearUser = async (req, res, next) => {
       user: savedUser
     })
   } catch (error) {
+    console.log('❌ ERROR EN CREAR USER:', error)
     next(error)
   }
 }

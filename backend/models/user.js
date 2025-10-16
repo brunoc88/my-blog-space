@@ -33,6 +33,9 @@ const userSchema = mongoose.Schema({
         maxlength: 30,
         minlength: 5
     },
+    rol:{
+        type:String
+    },
     imagen: {
         type: String,
         default: 'default.png'
