@@ -2,10 +2,10 @@ const jwt = require('jsonwebtoken')
 
 exports.login = (req, res, next) => {
     try {
-        const { _id, userName, email, rol, imagen } = req.user
+        const { id, userName, email, rol, imagen } = req.user
 
         let userForToken = {
-            id: _id,
+            id,
             userName,
             email,
             rol,

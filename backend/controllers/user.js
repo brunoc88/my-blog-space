@@ -37,3 +37,13 @@ exports.crearUser = async (req, res, next) => {
     next(error)
   }
 }
+
+exports.suspenderCuenta = async (req, res, next) => {
+  try {
+    let id = req.params.id
+    await User.findByIdAndUpdate(id, {susendida: true}, {new:true})
+    return res.status(200).json({mensaje:'Cuenta suspendida'})
+  } catch (error) {
+    next(error)
+  }
+}
