@@ -25,7 +25,7 @@ if (process.env.NODE_ENV === 'dev') {
 
 app.use('/api', loginRouter)
 app.use('/api/user', userRouter)
-app.use('/api/etiqueta', tagRouter)
+app.use('/api/tag', tagRouter)
 
 app.use(unknowEndpoint)
 app.use(errorHandler)

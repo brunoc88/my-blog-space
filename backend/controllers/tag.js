@@ -9,7 +9,7 @@ exports.crearEtiqueta = async (req, res, next) => {
         const etiquetaGuardada = await nuevaEtiqueta.save()
 
         res.status(201).json({
-            message: 'Etiqueta creada con éxito',
+            mensaje: 'Etiqueta creada con éxito',
             tag: etiquetaGuardada
         })
 
