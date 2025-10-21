@@ -23,7 +23,7 @@ const blogSchema = mongoose.Schema({
     tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
     visibilidad: {
         type: Boolean,
-        require: true
+        required: true
     },
     fecha: {
         type: Date,
@@ -32,6 +32,11 @@ const blogSchema = mongoose.Schema({
             today.setHours(0, 0, 0, 0) // deja solo la fecha, hora 00:00:00
             return today
         }
+    },
+    autor: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User',                          
+        required: true                        
     }
 })
 
