@@ -35,8 +35,7 @@ const blogSchema = mongoose.Schema({
     },
     autor: {
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User',                          
-        required: true                        
+        ref: 'User'                        
     }
 })
 
