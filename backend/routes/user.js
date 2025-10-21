@@ -6,14 +6,11 @@ const suspensionGuard = require('../middlewares/suspensionGuard')
 const upload = require('../utils/multer')
 const userController = require('../controllers/user')
 
+// rutas publicas
 
-// limitador de llamadas
+router.post('/registro', limiter, upload.single('imagen'), userValidations, userController.crearUser)
 
-router.use(limiter)
-
-router.post('/registro', upload.single('imagen'), userValidations, userController.crearUser)
-
-router.post('/registro/:admin', upload.single('imagen'), userValidations, userController.crearUser)
+router.post('/registro/:admin', limiter, upload.single('imagen'), userValidations, userController.crearUser)
 
 // rutas privadas
 
