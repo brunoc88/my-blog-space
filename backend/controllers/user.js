@@ -41,8 +41,20 @@ exports.crearUser = async (req, res, next) => {
 exports.suspenderCuenta = async (req, res, next) => {
   try {
     let id = req.params.id
-    await User.findByIdAndUpdate(id, {susendida: true}, {new:true})
-    return res.status(200).json({mensaje:'Cuenta suspendida'})
+    await User.findByIdAndUpdate(id, { susendida: true }, { new: true })
+    return res.status(200).json({ mensaje: 'Cuenta suspendida' })
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.editarCuenta = async (req, res, next) => {
+  try {
+    const { id } = req.user
+    const cambios = req.body
+    
+    await User.findByIdAndUpdate(id, cambios)
+    return res.status(200).json({ mensaje: 'Datos acuatilzados', user:cambios })
   } catch (error) {
     next(error)
   }
