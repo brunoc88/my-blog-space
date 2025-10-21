@@ -82,7 +82,7 @@ exports.editar = async (req, res, next) => {
 
         await tag.save()
 
-        return res.status(200).json({mensaje:'Etiqueta actualizada', tag})
+        return res.status(200).json({ mensaje: 'Etiqueta actualizada', tag })
 
     } catch (error) {
         next(error)

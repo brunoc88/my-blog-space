@@ -34,12 +34,12 @@ beforeEach(async () => {
 })
 
 describe('PATCH /api/tag/editar/:id', () => {
-    test('Editar etiqueta activa' , async () => {
+    test('Editar etiqueta activa', async () => {
         const res = await api
-        .patch(`/api/tag/editar/${tags[0].id}`)
-        .set('Authorization', `Bearer ${token}`)
-        .send({nombre:'survivor'})
-        .expect(200)
+            .patch(`/api/tag/editar/${tags[0].id}`)
+            .set('Authorization', `Bearer ${token}`)
+            .send({ nombre: 'survivor' })
+            .expect(200)
 
         expect(res.body).toHaveProperty('mensaje')
         expect(res.body).toHaveProperty('tag')
@@ -47,12 +47,12 @@ describe('PATCH /api/tag/editar/:id', () => {
         expect(res.body.tag.nombre).toBe('survivor')
     })
 
-     test('Editar etiqueta inactiva' , async () => {
+    test('Editar etiqueta inactiva', async () => {
         const res = await api
-        .patch(`/api/tag/editar/${tags[2].id}`)
-        .set('Authorization', `Bearer ${token}`)
-        .send({nombre:'survivor'})
-        .expect(403)
+            .patch(`/api/tag/editar/${tags[2].id}`)
+            .set('Authorization', `Bearer ${token}`)
+            .send({ nombre: 'survivor' })
+            .expect(403)
 
         expect(res.body).toHaveProperty('error')
         expect(res.body.error).toContain('Etiqueda desabilitada')
