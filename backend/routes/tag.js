@@ -8,4 +8,6 @@ router.use(verifyRole('admin'))
 
 router.post('/crear', tagValidations, tagController.crearEtiqueta)
 
+router.patch('/desactivar/:id', tagController.desactivar)
+
 module.exports = router

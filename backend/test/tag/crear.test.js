@@ -2,6 +2,7 @@ const app = require('../../app')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const Tag = require('../../models/tag')
+const User = require('../../models/user')
 const api = supertest(app)
 const { MONGODB_URI } = require('../../utils/config')
 const { loadUsers, getUsers } = require('../test_helper')
@@ -16,6 +17,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
     await Tag.deleteMany({})
+    await User.deleteMany({})
     await loadUsers()
     users = await getUsers()
 
