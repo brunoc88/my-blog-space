@@ -76,6 +76,7 @@ const userValidations = (req, res, next) => {
 
     // Si todo OK
     req.body = { userName, email, pregunta, respuesta, password, password2 }
+    
     next()
 }
 

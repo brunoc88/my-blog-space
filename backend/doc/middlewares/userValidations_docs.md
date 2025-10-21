@@ -118,11 +118,14 @@ if (Object.keys(errores).length > 0) {
     return res.status(400).json({ error: errores })
 }
 
+// Si todo OK
+req.body = { userName, email, pregunta, respuesta, password, password2 }
+
 next()
 ```
 
 - Si `errores` tiene alguna propiedad, se responde con un **400 Bad Request** y el detalle de errores por campo.
-- Si no hay errores, se llama a `next()` para continuar con el flujo normal del request (controlador).
+- Si no hay errores, se pasa a la propiedad body los atributos sanitizados y se llama a `next()` para continuar con el flujo normal del request (controlador).
 
 ---
 
