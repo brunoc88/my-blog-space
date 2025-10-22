@@ -23,7 +23,11 @@ const blogSchema = mongoose.Schema({
     tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
     visibilidad: {
         type: Boolean,
-        required: true
+        required: [true, 'Seleccione si quiere que sea publico o privado']
+    },
+    permitirComentarios: {
+        type: Boolean,
+        required:[true, 'Debe elegir si permite los comentarios']
     },
     fecha: {
         type: Date,

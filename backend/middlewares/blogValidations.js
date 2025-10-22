@@ -1,11 +1,12 @@
 const blogValidations = (req, res, next) => {
-    let { titulo, nota, tags, visibilidad } = req.body
+    let { titulo, nota, tags, visibilidad, permitirComentarios } = req.body
     const errores = {}
 
     let typeChecks = {
         titulo: 'string',
         nota: 'string',
-        visibilidad: 'boolean'
+        visibilidad: 'boolean',
+        permitirComentarios: 'boolean'
     }
 
     for (const [campo, tipoEsperado] of Object.entries(typeChecks)) {
@@ -22,7 +23,8 @@ const blogValidations = (req, res, next) => {
         titulo: titulo?.trim(),
         nota: nota?.trim(),
         visibilidad,
-        tags
+        tags,
+        permitirComentarios
     }
 
     if ('titulo' in req.body) {
@@ -56,6 +58,10 @@ const blogValidations = (req, res, next) => {
 
     if ('visibilidad' in req.body) {
         if (visibilidad === null || visibilidad === '') errores.visibilidad = 'Debe elegir privado o publico'
+    }
+
+    if ('permitirComentarios' in req.body) {
+        if (permitirComentarios === null || permitirComentarios === '') errores.permitirComentarios = 'Debe elegir si los comentarios van estar publicos o no'
     }
 
     if (Object.keys(errores).length > 0) return res.status(400).json({ error: errores })

@@ -39,7 +39,8 @@ describe('POST /api/blog/crear', () => {
                 nota: 'CapCom acaba de hacer publico los avances del nuevo Resident Evil Requiem',
                 autor: users[0].id,
                 visibilidad: true,
-                tags: [tags[0].id, tags[1].id]
+                tags: [tags[0].id, tags[1].id],
+                permitirComentarios: true
             }
 
             const res = await api
