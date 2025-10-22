@@ -33,7 +33,7 @@ beforeEach(async () => {
 
 describe('POST /api/blog/crear', () => {
     describe('Postear blog ', () => {
-        test.only('Blog sin imagen', async () => {
+        test('Blog sin imagen', async () => {
             let blog = {
                 titulo: 'Nuevo Resident Evil',
                 nota: 'CapCom acaba de hacer publico los avances del nuevo Resident Evil Requiem',
