@@ -58,6 +58,8 @@ describe('POST /api/blog/crear', () => {
             expect(res.body.blog.tags).toEqual(
                 expect.arrayContaining(blog.tags)
             )
+            expect(res.body.blog).toHaveProperty('estado')
+            expect(res.body.blog.estado).toBe(true)
         })
     })
 })

@@ -37,6 +37,10 @@ const blogSchema = mongoose.Schema({
             return today
         }
     },
+    estado:{
+        type: Boolean,
+        default: true
+    },
     autor: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User'                        
