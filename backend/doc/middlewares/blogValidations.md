@@ -1,3 +1,10 @@
+# Middleware de Validación para Blogs
+
+Este middleware se encarga de validar y sanitizar los datos que llegan desde un formulario para crear o actualizar un **blog**.
+
+## Código
+
+```javascript
 const blogValidations = (req, res, next) => {
     let { titulo, nota, tags, visibilidad, permitirComentarios } = req.body
     const errores = {}
@@ -86,3 +93,27 @@ const blogValidations = (req, res, next) => {
 }
 
 module.exports = blogValidations
+```
+
+## Explicación
+
+1. **Validación de tipos:**  
+   Se comprueba que los campos recibidos (`titulo`, `nota`, `visibilidad`, `permitirComentarios`) sean strings, ya que al enviar un formulario multipart/form-data todos los campos llegan como strings, incluso los que en el modelo son booleanos.
+
+2. **Sanitización y conversión a booleanos:**  
+   - `visibilidad`: `'publico'` → `true`, cualquier otro valor → `false`.  
+   - `permitirComentarios`: `'permitir'` → `true`, `'no permitir'` → `false`.  
+   Esto permite mantener la consistencia con el modelo de Mongoose, que define estos campos como booleanos.
+
+3. **Validaciones específicas:**
+   - `titulo`: obligatorio, entre 5 y 100 caracteres, solo letras, números y signos básicos.
+   - `nota`: obligatorio, entre 20 y 5000 caracteres.
+   - `tags`: debe ser un array con al menos una etiqueta.
+   - `visibilidad` y `permitirComentarios`: solo valores válidos permitidos.
+
+4. **Errores:**  
+   Si se encuentra algún error, devuelve un JSON con los errores y status `400`.
+
+5. **Flujo:**  
+   Si todo está correcto, se sobrescribe `req.body` con los datos **sanitizados y convertidos**, y se llama a `next()` para que el flujo continúe.
+
