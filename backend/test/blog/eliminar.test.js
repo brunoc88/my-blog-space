@@ -14,6 +14,7 @@ let blogs = null
 let token = null
 let tokenUserComun2 = null
 let tokenAdmin = null
+let tokenAdmin2 = null
 
 
 beforeAll(async () => {
@@ -41,10 +42,12 @@ beforeEach(async () => {
     const res = await api.post('/api/login').send({ user: users[0].userName, password: 'sekret' })
     const res2 = await api.post('/api/login').send({ user: users[1].userName, password: 'sekret' })
     const res3 = await api.post('/api/login').send({ user: users[4].userName, password: 'sekret' })
+    const res4 = await api.post('/api/login').send({ user: users[5].userName, password: 'sekret' })
 
     token = res2.body.token
     tokenUserComun2 = res3.body.token
     tokenAdmin = res.body.token
+    tokenAdmin2 = res4.body.token
 
 })
 
@@ -84,14 +87,53 @@ describe('PATCH /api/blog/eliminar', () => {
             expect(res.body.mensaje).toBe('No tienes permiso para realizar esta acción')
         })
 
-        test('Eliminar blog siendo diferente us', async () => {
+        test('Eliminar blog siendo diferentes usuarios con mismo rol comun', async () => {
 
             const res = await api
-                .patch(`/api/blog/eliminar/${blogs[0].id}`)
-                .set('Authorization', `Bearer ${token}`)
+                .patch(`/api/blog/eliminar/${blogs[1].id}`)
+                .set('Authorization', `Bearer ${tokenUserComun2}`)
                 .expect(403)
 
             expect(res.body.mensaje).toBe('No tienes permiso para realizar esta acción')
+        })
+
+        test('Eliminar blog siendo diferentes usuarios con mismo rol admin', async () => {
+
+            const res = await api
+                .patch(`/api/blog/eliminar/${blogs[0].id}`)
+                .set('Authorization', `Bearer ${tokenAdmin2}`)
+                .expect(403)
+
+            expect(res.body.mensaje).toBe('No tienes permiso para realizar esta acción')
+        })
+
+        test('Eliminar blog con usuario eliminado', async () => {
+
+            const res = await api
+                .patch(`/api/blog/eliminar/${blogs[4].id}`)
+                .set('Authorization', `Bearer ${tokenAdmin2}`)
+                .expect(400)
+
+            expect(res.body.mensaje).toBe('Usuario eliminado')
+        })
+    })
+
+    describe('Eliminacion de blog validas', () => {
+        test('Blog eliminado por mismo autor', async () => {
+            const res = await api
+                .patch(`/api/blog/eliminar/${blogs[0].id}`)
+                .set('Authorization', `Bearer ${tokenAdmin}`)
+                .expect(200)
+
+            expect(res.body.mensaje).toBe('Blog eliminado correctamente')
+        })
+        test('Blog de autor rol comun eliminado por admin', async () => {
+            const res = await api
+                .patch(`/api/blog/eliminar/${blogs[1].id}`)
+                .set('Authorization', `Bearer ${tokenAdmin}`)
+                .expect(200)
+
+            expect(res.body.mensaje).toBe('Blog eliminado correctamente')
         })
     })
 })

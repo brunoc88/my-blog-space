@@ -11,6 +11,7 @@ const blogPermissions = async (req, res, next) => {
 
     const author = await User.findById(blog.autor)
     if (!author) return res.status(404).json({ mensaje: 'Usuario autor no encontrado' })
+    if (author.suspendida) return res.status(400).json({ mensaje: 'Usuario eliminado' })
 
     const isSelf = author.id === req.user.id
     const sameRole = author.rol === req.user.rol
@@ -21,7 +22,7 @@ const blogPermissions = async (req, res, next) => {
       return res.status(403).json({ mensaje: 'No tienes permiso para realizar esta acción' })
     }
 
-    // Si No es el dueño y su rol no es admin
+    // Si No es el dueño, tienen diferente rol y el usuario no es admin
     if (!isSelf && !sameRole && req.user.rol !== 'admin') {
       return res.status(403).json({ mensaje: 'No tienes permiso para realizar esta acción' })
     }

@@ -38,7 +38,7 @@ const loadBlogs = async () => {
     })
 
     const blog4 = new Blog({
-        titulo: 'Fake Title3',
+        titulo: 'Fake Title4',
         nota: 'ya no se que escribir como nota, ya van 4',
         tags: [tags[0].id],
         visibilidad: true,
@@ -46,10 +46,20 @@ const loadBlogs = async () => {
         autor: users[1].id
     })
 
+    const blog5 = new Blog({
+        titulo: 'Fake Title5',
+        nota: 'ya no se que escribir como nota, ya van 5',
+        tags: [tags[0].id],
+        visibilidad: true,
+        permitirComentarios: false,
+        autor: users[2].id
+    })
+
     await blog.save()
     await blog2.save()
     await blog3.save()
     await blog4.save()
+    await blog5.save()
 }
 
 

@@ -56,11 +56,22 @@ const loadUsers = async () => {
         suspendida: false
     })
 
+     let user6 = new User({
+        userName: 'fakeuser6',
+        email: 'fakeuser6@gmail.com',
+        pregunta: 'Videojuego Favorito?',
+        respuesta: 'Resident Evil',
+        password: passwordHash,
+        rol: 'admin',
+        suspendida: false
+    })
+
     await user.save()
     await user2.save()
     await user3.save()
     await user4.save()
     await user5.save()
+    await user6.save()
 }
 
 const getUsers = async () => {
