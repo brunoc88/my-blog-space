@@ -6,7 +6,7 @@ const {
     preguntaValidation,
     respuestaValidations,
     claveValidation
-} = require('./../utils/user/validations')
+} = require('../../utils/user/validations')
 
 
 const userValidations = (req, res, next) => {

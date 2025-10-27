@@ -9,7 +9,7 @@
     "test:u": "npm test test/user/",
     "test:l": "npm test test/login/",
     "test:t": "npm test test/tag/",
-    "test:b": "npm test test/blog/crear.test.js",
+    "test:b": "npm test test/blog/eliminar.test.js",
     "test:watch": "cross-env NODE_ENV=test jest --watch"
   },
   "keywords": [],

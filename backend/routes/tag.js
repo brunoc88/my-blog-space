@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const tagValidations = require('../middlewares/tagValidations')
+const tagValidations = require('../middlewares/tag/tagValidations')
 const { verifyRole, userExtractor } = require('../middlewares/authMiddleware')
 const tagController = require('../controllers/tag')
 

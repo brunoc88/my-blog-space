@@ -1,8 +1,8 @@
 const router = require('express').Router()
-const userValidations = require('../middlewares/userValidations')
+const userValidations = require('../middlewares/user/userValidations')
 const { userExtractor } = require('../middlewares/authMiddleware')
 const limiter = require('../middlewares/limiter')
-const suspensionGuard = require('../middlewares/suspensionGuard') 
+const suspensionGuard = require('../middlewares/user/suspensionGuard') 
 const upload = require('../utils/multer')
 const userController = require('../controllers/user')
 

@@ -20,3 +20,17 @@ exports.crear = async (req, res, next) => {
         next(error)
     }
 }
+
+exports.eliminar = async (req, res, next) => {
+    try {
+        const blog = req.blog
+        blog.estado = false
+        await blog.save()
+
+        return res.status(200).json({ mensaje: 'Blog eliminado correctamente' })
+    } catch (error) {
+        next(error)
+    }
+}
+
+
