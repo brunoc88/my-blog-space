@@ -10,6 +10,8 @@ router.use(userExtractor)
 
 router.post('/crear', upload.single('imagen'), blogValidations, blogController.crear)
 
-router.patch('/eliminar/:id', blogPermissions, blogController.eliminar)
+router.patch('/eliminar/:id', blogPermissions('eliminar'), blogController.eliminar)
+
+router.patch('/visibilidad/:id', blogPermissions('visibilidad'), blogController.cambiarVisibilidad)
 
 module.exports = router

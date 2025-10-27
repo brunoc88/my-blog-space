@@ -1,7 +1,7 @@
 const Blog = require('../../models/blog')
 const User = require('../../models/user')
 
-const blogPermissions = async (req, res, next) => {
+const blogPermissions = (accion) => async (req, res, next) => {
   try {
     const { id } = req.params
     const blog = await Blog.findById(id)
@@ -15,18 +15,26 @@ const blogPermissions = async (req, res, next) => {
 
     const isSelf = author.id === req.user.id
     const sameRole = author.rol === req.user.rol
-   
 
-    // Si NO es el dueño y tienen el mismo rol → prohibido
-    if (!isSelf && sameRole) {
-      return res.status(403).json({ mensaje: 'No tienes permiso para realizar esta acción' })
+
+    if (accion === 'eliminar') {
+      // Si NO es el dueño y tienen el mismo rol → prohibido
+      if (!isSelf && sameRole) {
+        return res.status(403).json({ mensaje: 'No tienes permiso para realizar esta acción' })
+      }
+
+      // Si No es el dueño, tienen diferente rol y el usuario no es admin
+      if (!isSelf && !sameRole && req.user.rol !== 'admin') {
+        return res.status(403).json({ mensaje: 'No tienes permiso para realizar esta acción' })
+      }
     }
 
-    // Si No es el dueño, tienen diferente rol y el usuario no es admin
-    if (!isSelf && !sameRole && req.user.rol !== 'admin') {
-      return res.status(403).json({ mensaje: 'No tienes permiso para realizar esta acción' })
+    if (accion === 'visibilidad') {
+      // solo el autor puede cambiar la visibilidad del blog
+      if (!isSelf) {
+        return res.status(403).json({ mensaje: 'No tienes permiso para realizar esta acción' })
+      }
     }
-
     req.blog = blog
     next()
 

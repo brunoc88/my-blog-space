@@ -33,4 +33,23 @@ exports.eliminar = async (req, res, next) => {
     }
 }
 
+exports.cambiarVisibilidad = async (req, res, next) => {
+    try {
+
+        if (req.blog.visibilidad) {
+            req.blog.visibilidad = false
+            req.blog.permitirComentarios = false
+            await req.blog.save()
+        } else {
+            req.blog.visibilidad = true
+            await req.blog.save()
+        }
+
+        res.status(200).json({ mensaje: 'Visibilidad actualizada', blog: req.blog })
+    } catch (error) {
+        next(error)
+    }
+}
+
+
 
