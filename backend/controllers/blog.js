@@ -51,5 +51,38 @@ exports.cambiarVisibilidad = async (req, res, next) => {
     }
 }
 
+exports.permitirComentarios = async (req, res, next) => {
+    try {
+        const blog = req.blog
+
+        if (!blog.visibilidad) {
+            return res.status(400).json({
+                mensaje: 'Para habilitar los comentarios el blog debe ser público'
+            })
+        }
+
+        // Alternar permitirComentarios
+        if (blog.permitirComentarios) {
+            blog.permitirComentarios = false
+            await blog.save()
+            return res.status(200).json({ 
+                mensaje: 'Comentarios deshabilitados', 
+                blog 
+            })
+        } else {
+            blog.permitirComentarios = true
+            await blog.save()
+            return res.status(200).json({ 
+                mensaje: 'Comentarios habilitados', 
+                blog 
+            })
+        }
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+
 
 

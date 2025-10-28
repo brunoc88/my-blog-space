@@ -14,4 +14,7 @@ router.patch('/eliminar/:id', blogPermissions('eliminar'), blogController.elimin
 
 router.patch('/visibilidad/:id', blogPermissions('visibilidad'), blogController.cambiarVisibilidad)
 
+router.patch('/permitirComentarios/:id', blogPermissions('comentarios'), blogController.permitirComentarios)
+
+
 module.exports = router
