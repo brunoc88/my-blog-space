@@ -16,5 +16,7 @@ router.patch('/visibilidad/:id', blogPermissions('visibilidad'), blogController.
 
 router.patch('/permitirComentarios/:id', blogPermissions('comentarios'), blogController.permitirComentarios)
 
+router.put('/editar/:id', upload.single('imagen'), blogPermissions('editar'), blogValidations, blogController.editar)
+
 
 module.exports = router

@@ -29,7 +29,7 @@ const blogPermissions = (accion) => async (req, res, next) => {
       }
     }
 
-    if (accion === 'visibilidad' || accion === 'comentarios') {
+    if (accion === 'visibilidad' || accion === 'comentarios' || accion === 'editar') {
       // solo el autor puede cambiar la visibilidad del blog
       if (!isSelf) {
         return res.status(403).json({ mensaje: 'No tienes permiso para realizar esta acción' })

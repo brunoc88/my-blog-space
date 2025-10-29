@@ -65,19 +65,35 @@ exports.permitirComentarios = async (req, res, next) => {
         if (blog.permitirComentarios) {
             blog.permitirComentarios = false
             await blog.save()
-            return res.status(200).json({ 
-                mensaje: 'Comentarios deshabilitados', 
-                blog 
+            return res.status(200).json({
+                mensaje: 'Comentarios deshabilitados',
+                blog
             })
         } else {
             blog.permitirComentarios = true
             await blog.save()
-            return res.status(200).json({ 
-                mensaje: 'Comentarios habilitados', 
-                blog 
+            return res.status(200).json({
+                mensaje: 'Comentarios habilitados',
+                blog
             })
         }
 
+    } catch (error) {
+        next(error)
+    }
+}
+
+exports.editar = async (req, res, next) => {
+    try {
+        const id = req.params.id
+        const cambios = req.body
+
+        if (req.file) {
+            cambios.imagen = req.file.filename
+        }
+
+        await Blog.findByIdAndUpdate(id, cambios, { new: true })
+        return res.status(200).json({ mensaje: 'Blog actualizado', blog: cambios })
     } catch (error) {
         next(error)
     }
