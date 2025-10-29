@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
+const generatePassword = require('../utils/user/generatePassword')
 
 exports.crearUser = async (req, res, next) => {
   const admin = req.params.admin
@@ -52,9 +53,28 @@ exports.editarCuenta = async (req, res, next) => {
   try {
     const { id } = req.user
     const cambios = req.body
-    
+
     await User.findByIdAndUpdate(id, cambios)
-    return res.status(200).json({ mensaje: 'Datos acuatilzados', user:cambios })
+    return res.status(200).json({ mensaje: 'Datos acuatilzados', user: cambios })
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.recuperarPassword = async (req, res, next) => {
+  try {
+    let user = req.user
+
+    const tempPassword = generarPasswordAleatoria()
+    const hashed = await bcrypt.hash(tempPassword, 10)
+
+    user.password = hashed
+    await user.save()
+    return res.status(200).json({
+      mensaje: 'Contraseña temporal generada correctamente',
+      tempPassword
+    })
+
   } catch (error) {
     next(error)
   }
