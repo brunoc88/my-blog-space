@@ -63,13 +63,14 @@ exports.editarCuenta = async (req, res, next) => {
 
 exports.recuperarPassword = async (req, res, next) => {
   try {
-    let user = req.user
 
-    const tempPassword = generarPasswordAleatoria()
+    let user = req.user
+    const tempPassword = generatePassword()
     const hashed = await bcrypt.hash(tempPassword, 10)
 
     user.password = hashed
     await user.save()
+
     return res.status(200).json({
       mensaje: 'Contraseña temporal generada correctamente',
       tempPassword

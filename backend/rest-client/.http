@@ -1,17 +1,3 @@
-POST http://localhost:3000/api/user/registro/admin
-Content-Type: application/json
-
-{
-    "userName":"faker88",
-    "email":"faker88@gmail.com",
-    "pregunta":"videojuego favorito?",
-    "respuesta": "resident evil",
-    "imagen":"",
-    "password":"sekret",
-    "password2":"sekret",
-    "clave":"ULTRASALADA"
-}
-###
 POST http://localhost:3000/api/user/registro
 Content-Type: application/json
 
@@ -29,20 +15,17 @@ POST http://localhost:3000/api/login
 Content-Type: application/json
 
 {
-    "user":"fake",
+    "user":"faker",
     "password":"sekret"
 }
 
 ###
-POST http://localhost:3000/api/user/registro/
+POST http://localhost:3000/api/user/recuperar-password
 Content-Type: application/json
 
 {
-    "userName":"",
-    "email":"",
-    "pregunta":"",
-    "respuesta": "",
-    "imagen":"",
-    "password":"",
-    "password2":""
+    "email":"faker12@gmail.com",
+    "pregunta":"videojuego favorito?",
+    "respuesta":"resident evil"
 }
+

@@ -56,7 +56,7 @@ const loadUsers = async () => {
         suspendida: false
     })
 
-     let user6 = new User({
+    let user6 = new User({
         userName: 'fakeuser6',
         email: 'fakeuser6@gmail.com',
         pregunta: 'Videojuego Favorito?',
@@ -65,6 +65,7 @@ const loadUsers = async () => {
         rol: 'admin',
         suspendida: false
     })
+
 
     await user.save()
     await user2.save()
