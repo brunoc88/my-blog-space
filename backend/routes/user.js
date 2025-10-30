@@ -24,4 +24,6 @@ router.patch('/:id/suspender', suspensionGuard, userController.suspenderCuenta)
 
 router.put('/editar', upload.single('imagen'), userValidations, userController.editarCuenta)
 
+router.patch('/estado', userController.estado)
+
 module.exports = router

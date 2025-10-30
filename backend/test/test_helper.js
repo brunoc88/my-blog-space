@@ -23,7 +23,8 @@ const loadUsers = async () => {
         respuesta: 'Resident Evil',
         password: passwordHash,
         rol: 'comun',
-        suspendida: false
+        suspendida: false,
+        estado:false //<-- cuenta privada
     })
 
     let user3 = new User({

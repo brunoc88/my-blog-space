@@ -6,7 +6,7 @@
     "start": "cross-env NODE_ENV=start node index.js",
     "dev": "cross-env NODE_ENV=dev nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
-    "test:u": "npm test test/user/recuperar-password.test.js",
+    "test:u": "npm test test/user/estado.test.js",
     "test:l": "npm test test/login/",
     "test:t": "npm test test/tag/",
     "test:b": "npm test test/blog/editar.test.js",
@@ -23,6 +23,7 @@
     "express-rate-limit": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "6.8.0",
+    "mongoose": "^8.19.2",
     "multer": "^2.0.2",
     "validator": "^13.15.15"
   },

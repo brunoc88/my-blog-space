@@ -80,3 +80,18 @@ exports.recuperarPassword = async (req, res, next) => {
     next(error)
   }
 }
+
+exports.estado = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id)
+
+    if(user.estado) user.estado = false
+    else user.estado = true
+
+    await user.save()
+
+    return res.status(200).json({mensaje:`Tu cuenta ahora es ${user.estado?'publica':'privada'}`, user})
+  } catch (error) {
+    next(error)
+  }
+}

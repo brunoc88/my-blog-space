@@ -33,8 +33,8 @@ const userSchema = mongoose.Schema({
         maxlength: 30,
         minlength: 5
     },
-    rol:{
-        type:String
+    rol: {
+        type: String
     },
     imagen: {
         type: String,
@@ -43,7 +43,31 @@ const userSchema = mongoose.Schema({
     suspendida: {
         type: Boolean,
         default: false
-    }
+    },
+    bloqueos: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        default: []
+    }],
+    seguidos: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        default: []
+    }],
+    seguidores: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        default: []
+    }],
+    estado: { // <-- cuenta privada o publica
+        type: Boolean,
+        default: true
+    },
+    solicitudes: [{ // <-- si la cuenta es privada se guarda
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        default: []
+    }]
 })
 
 userSchema.set('toJSON', {
