@@ -25,7 +25,10 @@ const verifyBlock = async (req, res, next) => {
       return res.status(400).json({ mensaje: `${user.userName} te ha bloqueado` })
     }
 
+    req.yo = yo
+    req.userTo = user
     next()
+
   } catch (error) {
     next(error)
   }

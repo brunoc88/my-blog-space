@@ -85,12 +85,63 @@ exports.estado = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id)
 
-    if(user.estado) user.estado = false
+    if (user.estado) user.estado = false
     else user.estado = true
 
     await user.save()
 
-    return res.status(200).json({mensaje:`Tu cuenta ahora es ${user.estado?'publica':'privada'}`, user})
+    return res.status(200).json({ mensaje: `Tu cuenta ahora es ${user.estado ? 'publica' : 'privada'}`, user })
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.seguir = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    let yo = req.yo
+    let userTo = req.userTo
+
+    // Verificamos si la cuenta es privada o publica
+    // Si es privada agregamos a solicitudes caso contrario seguimos al usuario
+
+    if (!userTo.estado) {
+      userTo.solicitudes.push(req.user.id)
+      await userTo.save()
+      return res.status(200).json({ mensaje: 'Tu solicitud fue enviada' })
+    }
+
+    // agregamos en seguidos
+    // a la vez agregamos nuestro id en seguidores del usuario
+
+    yo.seguidos.push(id)
+    userTo.seguidores.push(req.user.id)
+
+    await yo.save()
+    await userTo.save()
+
+    return res.status(200).json({ mensaje: `Ahora sigues a ${userTo.userName}` })
+
+  } catch (error) {
+    next(error)
+  }
+}
+
+// temporales: falta populate
+exports.miPerfil = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id)
+    return res.status(200).json(user)
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.perfil = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const user = await User.findById(id)
+    return res.status(200).json(user)
   } catch (error) {
     next(error)
   }
