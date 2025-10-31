@@ -127,6 +127,18 @@ exports.seguir = async (req, res, next) => {
   }
 }
 
+exports.bloquear = async (req, res, next) => {
+  try {
+    const { yo, userTo } = req
+
+    yo.bloqueos.push(userTo.id)
+    await yo.save()
+
+    return res.status(200).json({mensaje:'Usuario bloqueado'})
+  } catch (error) {
+    next(error)
+  }
+}
 // temporales: falta populate
 exports.miPerfil = async (req, res, next) => {
   try {
