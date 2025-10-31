@@ -1,9 +1,5 @@
 Pendientes:
 
-Bloqueos:
-
-- Hace router & controladores de bloqueo
-
 Seguimiento:
 
 - Seguimiento con Bloqueos

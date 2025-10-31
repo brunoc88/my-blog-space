@@ -8,6 +8,7 @@ const recoveryPasswordGuard = require('../middlewares/user/recoveryPasswordGuard
 const verifyBlock = require('../middlewares/verifyBlock')
 const verifyBlockPermissions = require('../middlewares/user/verifyBlockPermissions')
 const verifyFollowing = require('../middlewares/user/verifyFollowing')
+const verifyUnblock = require('../middlewares/user/verifyUnblock')
 const upload = require('../utils/multer')
 const userController = require('../controllers/user')
 
@@ -29,9 +30,11 @@ router.put('/editar', upload.single('imagen'), userValidations, userController.e
 
 router.patch('/estado', userController.estado)
 
-router.patch('/seguir/:id', verifyBlock, verifyFollowing, userController.seguir)
-
 router.patch('/bloquear/:id', verifyBlock, verifyBlockPermissions, userController.bloquear)
+
+router.patch('/desbloquear/:id', verifyUnblock, userController.desbloquear)
+
+router.patch('/seguir/:id', verifyBlock, verifyFollowing, userController.seguir)
 
 // provisional: falta populate
 router.get('/miPerfil', userController.miPerfil)

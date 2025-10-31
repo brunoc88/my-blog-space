@@ -134,11 +134,27 @@ exports.bloquear = async (req, res, next) => {
     yo.bloqueos.push(userTo.id)
     await yo.save()
 
-    return res.status(200).json({mensaje:'Usuario bloqueado'})
+    return res.status(200).json({ mensaje: 'Usuario bloqueado' })
   } catch (error) {
     next(error)
   }
 }
+
+exports.desbloquear = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const { myUser, userTo } = req
+    myUser.bloqueos = myUser.bloqueos.filter(u => u.toString() !== id)
+
+    await myUser.save()
+    return res.status(200).json({ mensaje: `Has desbloqueado a ${userTo.userName}` })
+
+  } catch (error) {
+    next(error)
+  }
+}
+
+
 // temporales: falta populate
 exports.miPerfil = async (req, res, next) => {
   try {
