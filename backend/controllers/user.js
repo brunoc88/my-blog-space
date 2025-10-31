@@ -127,6 +127,20 @@ exports.seguir = async (req, res, next) => {
   }
 }
 
+exports.dejarDeSeguir = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const { myUser, userTo } = req
+    myUser.seguidos = myUser.seguidos.filter(u => u.toString() !== id)
+
+    await myUser.save()
+    return res.status(200).json({ mensaje: `Has dejado de seguir a ${userTo.userName}` })
+
+  } catch (error) {
+    next(error)
+  }
+}
+
 exports.bloquear = async (req, res, next) => {
   try {
     const { yo, userTo } = req

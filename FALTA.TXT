@@ -1,9 +1,5 @@
 Pendientes:
 
-Seguimiento:
-
-- Seguimiento con Bloqueos
-
 Solicitudes:
 
 - ruta para obtener todas las Solicitudes de cuentas activas y no bloqueadas
@@ -13,4 +9,10 @@ Solicitudes:
 - probable endpoints: 
     router.patch /api/user/solicitud/:id
     router.delete /api/user/solicitud/:id
-    
+
+
+Likes, comentar, fav: 
+
+- rutas y controles
+
+Terminar documentacion
