@@ -8,7 +8,7 @@ exports.crear = async (req, res, next) => {
             titulo,
             nota,
             tags,
-            imagen: req.file ? req.file.filename : 'default.png',
+            imagen: req.file ? req.file.filename : '',
             visibilidad,
             permitirComentarios,
             autor: req.user.id

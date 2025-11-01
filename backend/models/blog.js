@@ -11,7 +11,7 @@ const blogSchema = mongoose.Schema({
     },
     imagen: {
         type: String,
-        default: 'default.png'
+        default: ''
     },
     nota: {
         type: String,
