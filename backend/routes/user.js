@@ -2,7 +2,7 @@ const router = require('express').Router()
 const userValidations = require('../middlewares/user/userValidations')
 const { userExtractor } = require('../middlewares/authMiddleware')
 const limiter = require('../middlewares/limiter')
-const suspensionGuard = require('../middlewares/user/suspensionGuard') 
+const suspensionGuard = require('../middlewares/user/suspensionGuard')
 const recoveryPasswordValidations = require('../middlewares/user/recoveryPasswordValidations')
 const recoveryPasswordGuard = require('../middlewares/user/recoveryPasswordGuard')
 const verifyBlock = require('../middlewares/verifyBlock')
@@ -36,7 +36,12 @@ router.patch('/desbloquear/:id', verifyAction('bloqueo'), userController.desbloq
 
 router.patch('/seguir/:id', verifyBlock, verifyFollowing, userController.seguir)
 
-router.patch('/noSeguir/:id',verifyAction('seguimiento'), userController.dejarDeSeguir)
+router.patch('/noSeguir/:id', verifyAction('seguimiento'), userController.dejarDeSeguir)
+
+router.patch('/solicitud/aceptar/:id', verifyBlock, verifyAction('solicitud'), userController.aceptarSolicitud)
+
+router.patch('/solicitud/rechazar/:id', verifyAction('solicitud'), userController.rechazarSolicitud)
+
 
 // provisional: falta populate
 router.get('/miPerfil', userController.miPerfil)

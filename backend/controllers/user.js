@@ -42,7 +42,7 @@ exports.crearUser = async (req, res, next) => {
 exports.suspenderCuenta = async (req, res, next) => {
   try {
     let id = req.params.id
-    await User.findByIdAndUpdate(id, { susendida: true }, { new: true })
+    await User.findByIdAndUpdate(id, { suspendida: true }, { new: true })
     return res.status(200).json({ mensaje: 'Cuenta suspendida' })
   } catch (error) {
     next(error)
@@ -132,8 +132,10 @@ exports.dejarDeSeguir = async (req, res, next) => {
     const { id } = req.params
     const { myUser, userTo } = req
     myUser.seguidos = myUser.seguidos.filter(u => u.toString() !== id)
+    userTo.seguidores = userTo.seguidores.filter(u => u.toString() !== myUser.id)
 
     await myUser.save()
+    await userTo.save()
     return res.status(200).json({ mensaje: `Has dejado de seguir a ${userTo.userName}` })
 
   } catch (error) {
@@ -168,6 +170,42 @@ exports.desbloquear = async (req, res, next) => {
   }
 }
 
+exports.aceptarSolicitud = async (req, res, next) => {
+  try {
+    let { userTo, myUser } = req
+
+    // acepto y agrego
+    myUser.seguidores.push(userTo.id)
+    userTo.seguidos.push(myUser.id)
+
+    // elimino la solicitud 
+    myUser.solicitudes = myUser.solicitudes.filter(u => u.toString() !== userTo.id)
+
+    await myUser.save()
+    await userTo.save()
+
+    return res.status(200).json({ mensaje: `${userTo.userName} ahora te sigue` })
+
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.rechazarSolicitud = async (req, res, next) => {
+  try {
+    let { userTo, myUser } = req
+
+    // elimino la solicitud 
+    myUser.solicitudes = myUser.solicitudes.filter(u => u.toString() !== userTo.id)
+
+    await myUser.save()
+
+    return res.status(200).json({ mensaje: `Haz rechazado la solicitud de ${userTo.userName}` })
+
+  } catch (error) {
+    next(error)
+  }
+}
 
 // temporales: falta populate
 exports.miPerfil = async (req, res, next) => {

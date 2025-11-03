@@ -19,6 +19,10 @@ const verifyAction = (accion) => async (req, res, next) => {
             if (!isFollowed) return res.status(404).json({ mensaje: 'El usuario no está en tu lista de seguidos' })
         }
 
+        if(accion === 'solicitud') {
+            const isRequested = myUser.solicitudes.some(u => u.toString() === id)
+            if (!isRequested) return res.status(404).json({ mensaje: 'El usuario ya no esta en tu lista de solicitudes' }) 
+        }
 
         req.myUser = myUser
         req.userTo = user

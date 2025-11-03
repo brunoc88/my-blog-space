@@ -1,16 +1,5 @@
 Pendientes:
 
-Solicitudes:
-
-- ruta para obtener todas las Solicitudes de cuentas activas y no bloqueadas
-
-- ver como manejar al aceptar o rechazar Solicitudes. Tal vez ruta (capaz dos rutas una para aceptar y otra para eliminar)
-
-- probable endpoints: 
-    router.patch /api/user/solicitud/:id
-    router.delete /api/user/solicitud/:id
-
-
 Likes, comentar, fav: 
 
 - rutas y controles
