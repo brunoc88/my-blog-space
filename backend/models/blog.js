@@ -58,6 +58,13 @@ const blogSchema = mongoose.Schema({
             ref: 'User',
             default: []
         }
+    ],
+    favoritos: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            default: []
+        }
     ]
 })
 

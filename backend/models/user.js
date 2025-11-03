@@ -67,7 +67,14 @@ const userSchema = mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'User',
         default: []
-    }]
+    }],
+     favoritos: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Blog',
+                default: []
+            }
+        ]
 })
 
 userSchema.set('toJSON', {
