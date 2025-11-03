@@ -22,5 +22,8 @@ router.put('/editar/:id', upload.single('imagen'), blogPermissions('editar'), bl
 
 router.patch('/:id/like', verifyBlogAction('like'), verifyBlock, blogController.like)
 
+router.patch('/:id/dislike', verifyBlogAction('dislike'), verifyBlock, blogController.disLike)
+
+
 
 module.exports = router

@@ -1,10 +1,13 @@
 Pendientes:
 
-Likes, comentar, fav: 
+Comentar, fav: 
 
 - rutas y controles
 
 Terminar documentacion
 
-posible ruta 
+SOLICITUDES GET
+
+- Mi perfil, perfiles, solicitudes, blogs
+
 

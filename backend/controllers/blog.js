@@ -119,6 +119,24 @@ exports.like = async (req, res, next) => {
     }
 }
 
+exports.disLike = async (req, res, next) => {
+    try {
+        let { blog } = req
 
+        // verifico si hay dislike previo
+        // para cambiar la accion a quitarle el dislike
+        const myDislike = blog.dislikes.some(u => u.toString() === req.user.id)
+        if(myDislike) {
+            blog.dislikes = blog.dislikes.filter(u => u.toString() !== req.user.id) //<-- quito like
+            await blog.save()
+            return res.status(200).json({mensaje:'Dislike quitado'})
+        }
+        blog.dislikes.push(req.user.id)
+        await blog.save()
+        return res.status(200).json({mensaje:'Dislike agregado'})
+    } catch (error) {
+        next(error)
+    }
+}
 
 
