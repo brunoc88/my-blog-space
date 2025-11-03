@@ -3,6 +3,8 @@ const upload = require('../utils/multer')
 const blogValidations = require('../middlewares/blog/blogValidations')
 const blogPermissions = require('../middlewares/blog/blogPermissions')
 const { userExtractor } = require('../middlewares/authMiddleware')
+const verifyBlock = require('../middlewares/verifyBlock')
+const verifyBlogAction = require('../middlewares/blog/verifyBlogAction')
 const blogController = require('../controllers/blog')
 
 
@@ -17,6 +19,8 @@ router.patch('/visibilidad/:id', blogPermissions('visibilidad'), blogController.
 router.patch('/permitirComentarios/:id', blogPermissions('comentarios'), blogController.permitirComentarios)
 
 router.put('/editar/:id', upload.single('imagen'), blogPermissions('editar'), blogValidations, blogController.editar)
+
+router.patch('/:id/like', verifyBlogAction('like'), verifyBlock, blogController.like)
 
 
 module.exports = router

@@ -99,6 +99,26 @@ exports.editar = async (req, res, next) => {
     }
 }
 
+exports.like = async (req, res, next) => {
+    try {
+        let { blog } = req
+
+        // verifico si hay like previo
+        // para cambiar la accion a quitarle el like
+        const myLike = blog.likes.some(u => u.toString() === req.user.id)
+        if(myLike) {
+            blog.likes = blog.likes.filter(u => u.toString() !== req.user.id) //<-- quito like
+            await blog.save()
+            return res.status(200).json({mensaje:'Like quitado'})
+        }
+        blog.likes.push(req.user.id)
+        await blog.save()
+        return res.status(200).json({mensaje:'Like agregado'})
+    } catch (error) {
+        next(error)
+    }
+}
+
 
 
 

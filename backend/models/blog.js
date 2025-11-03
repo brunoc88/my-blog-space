@@ -27,7 +27,7 @@ const blogSchema = mongoose.Schema({
     },
     permitirComentarios: {
         type: Boolean,
-        required:[true, 'Debe elegir si permite los comentarios']
+        required: [true, 'Debe elegir si permite los comentarios']
     },
     fecha: {
         type: Date,
@@ -37,14 +37,28 @@ const blogSchema = mongoose.Schema({
             return today
         }
     },
-    estado:{
+    estado: {
         type: Boolean,
         default: true
     },
     autor: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User'                        
-    }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    likes: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            default: []
+        }
+    ],
+    dislikes: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            default: []
+        }
+    ]
 })
 
 blogSchema.set('toJSON', {
