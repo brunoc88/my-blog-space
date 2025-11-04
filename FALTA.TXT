@@ -1,6 +1,6 @@
 Pendientes:
 
-Comentar, fav: 
+Comentar: 
 
 - rutas y controles
 
@@ -9,5 +9,14 @@ Terminar documentacion
 SOLICITUDES GET
 
 - Mi perfil, perfiles, solicitudes, blogs
+
+SUGERENCIAS:
+
+LA PROXIMA VEZ PODRIAMOS HACER UNA FUNCION EN UTIL PARA VERIFICAR 
+EXISTENCIA O ESTADO DE UN MODELO
+
+EJEMPLO:
+
+checkUser: se comprueba si existe o si se eliminino
 
 

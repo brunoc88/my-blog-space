@@ -26,5 +26,9 @@ router.patch('/:id/dislike', verifyBlogAction('dislike'), verifyBlock, blogContr
 
 router.patch('/:id/fav', verifyBlogAction('favoritos'), verifyBlock, blogController.fav)
 
+router.post('/:id/comentar',verifyBlogAction('comentar'), verifyBlock, blogController.comentar)
+
+router.patch('/:id/comentar/:idComment', blogPermissions('editar comentario'), verifyBlogAction('editar'), verifyBlock, blogController.editarComentario)
+
 
 module.exports = router

@@ -88,6 +88,25 @@ describe('PATCH /api/blog/:id/fav', () => {
         expect(userAfter.favoritos.length).toBe(user.favoritos.length - 1)
 
     })
+
+    test('Agregar blog a favortios estando bloqueados', async () => {
+        // Act: Bloqueamos al usuario
+        await api
+        .patch(`/api/user/bloquear/${users[1].id}`)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200)
+     
+
+        // Act: Intentamos agregar el blog a favoritos con el usuario bloqueado
+
+        const res = await api
+        .patch(`/api/blog/${blogs[0].id}/fav`)
+        .set('Authorization', `Bearer ${token2}`)
+        .expect(400)
+
+        expect(res.body).toHaveProperty('mensaje')
+        expect(res.body.mensaje).toBe(`${users[0].userName} te ha bloqueado` )
+    })
 })
 
 afterAll(async () => {

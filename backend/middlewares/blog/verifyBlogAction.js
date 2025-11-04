@@ -1,8 +1,9 @@
 const Blog = require('../../models/blog')
+const commentValidations = require('../../utils/commentValidations')
 
 const verifyBlogAction = (accion) => async (req, res, next) => {
   try {
-    const { id } = req.params
+    const { id, idComments } = req.params
     const blog = await Blog.findById(id)
 
     if (!blog) return res.status(404).json({ mensaje: 'No se encontró el blog' })
@@ -23,14 +24,26 @@ const verifyBlogAction = (accion) => async (req, res, next) => {
       if (likes) return res.status(400).json({ mensaje: 'No puedes dar dislike si ya diste like' })
     }
 
-    if(accion === 'favoritos') {
+    if (accion === 'favoritos') {
       const favs = blog.favoritos.some(u => u.toString() === req.user.id)
       req.favs = favs
     }
 
+    if (accion === 'comentar' || accion === 'editar') {
+      let { mensaje } = req.body
+
+      // Sanitizacion
+      mensaje = mensaje?.trim().toLowerCase()
+      const commentError = commentValidations(mensaje)
+      if (commentError) return res.status(400).json({ mensaje: commentError })
+      if(!blog.permitirComentarios) return res.status(400).json({mensaje:'El autor deshabilito los comentarios'})
+      req.mensaje = mensaje
+    }
+
     next()
-    
+
   } catch (error) {
+    console.log('ERROR EN VERIFYBLOGACTION',error)
     next(error)
   }
 }

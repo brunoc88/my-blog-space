@@ -35,6 +35,21 @@ const blogPermissions = (accion) => async (req, res, next) => {
         return res.status(403).json({ mensaje: 'No tienes permiso para realizar esta acción' })
       }
     }
+
+    if (accion === 'editar comentario') {
+      const { idComment } = req.params
+      const comment = blog.comentarios.id(idComment) //<-- metodo especial de busqueda de mongoose
+      //siver para buscar especificamente subdocumentos. Devuelve directamente un subdocumento
+      if (!comment) {
+        return res.status(404).json({ mensaje: 'Comentario no encontrado' })
+      }
+
+      if (comment.usuario.toString() !== req.user.id) {
+        return res.status(403).json({ mensaje: 'No tienes permiso para editar este comentario' })
+      }
+      req.comment = comment
+    }
+
     req.blog = blog
     next()
 

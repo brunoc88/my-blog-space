@@ -142,10 +142,10 @@ exports.disLike = async (req, res, next) => {
 exports.fav = async (req, res, next) => {
     try {
         let { blog, favs, yo } = req
-        
+
         // Verifico si ya el usuario ya agrego el blog a sus favoritos y viceverza
         // Si es asi elimino el seguimiento en ambas partes
-        
+
         if (favs) {
             blog.favoritos = blog.favoritos.filter(u => u.toString() !== yo.id)
             yo.favoritos = yo.favoritos.filter(b => b.toString() !== blog.id)
@@ -165,4 +165,42 @@ exports.fav = async (req, res, next) => {
     }
 }
 
+exports.comentar = async (req, res, next) => {
+    try {
+        let { blog, yo, mensaje } = req
+
+        let comentario = {
+            mensaje,
+            usuario: yo.id
+        }
+        blog.comentarios.push(comentario)
+        await blog.save()
+
+        // populate solo el último comentario
+        await blog.populate({
+            path: 'comentarios.usuario',
+            select: 'userName imagen'
+        })
+
+        const ultimoComentario = blog.comentarios[blog.comentarios.length - 1]
+        return res.status(201).json({ mensaje: 'Comentario agregado', comentario: ultimoComentario })
+    } catch (error) {
+        next(error)
+    }
+}
+
+exports.editarComentario = async (req, res, next) => {
+  try {
+    const { blog, mensaje, comment } = req
+
+    comment.mensaje = mensaje
+    await blog.save()
+
+    await comment.populate('usuario', 'userName imagen') 
+
+    res.status(200).json({ mensaje: 'Comentario editado', comentario: comment })
+  } catch (error) {
+    next(error)
+  }
+}
 

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const comentarioSchema = require('./subDocuments/comentario')
 
 const blogSchema = mongoose.Schema({
     titulo: {
@@ -65,7 +66,8 @@ const blogSchema = mongoose.Schema({
             ref: 'User',
             default: []
         }
-    ]
+    ],
+    comentarios: [comentarioSchema]
 })
 
 blogSchema.set('toJSON', {
