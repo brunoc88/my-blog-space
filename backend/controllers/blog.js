@@ -106,14 +106,14 @@ exports.like = async (req, res, next) => {
         // verifico si hay like previo
         // para cambiar la accion a quitarle el like
         const myLike = blog.likes.some(u => u.toString() === req.user.id)
-        if(myLike) {
+        if (myLike) {
             blog.likes = blog.likes.filter(u => u.toString() !== req.user.id) //<-- quito like
             await blog.save()
-            return res.status(200).json({mensaje:'Like quitado'})
+            return res.status(200).json({ mensaje: 'Like quitado' })
         }
         blog.likes.push(req.user.id)
         await blog.save()
-        return res.status(200).json({mensaje:'Like agregado'})
+        return res.status(200).json({ mensaje: 'Like agregado' })
     } catch (error) {
         next(error)
     }
@@ -126,14 +126,40 @@ exports.disLike = async (req, res, next) => {
         // verifico si hay dislike previo
         // para cambiar la accion a quitarle el dislike
         const myDislike = blog.dislikes.some(u => u.toString() === req.user.id)
-        if(myDislike) {
+        if (myDislike) {
             blog.dislikes = blog.dislikes.filter(u => u.toString() !== req.user.id) //<-- quito like
             await blog.save()
-            return res.status(200).json({mensaje:'Dislike quitado'})
+            return res.status(200).json({ mensaje: 'Dislike quitado' })
         }
         blog.dislikes.push(req.user.id)
         await blog.save()
-        return res.status(200).json({mensaje:'Dislike agregado'})
+        return res.status(200).json({ mensaje: 'Dislike agregado' })
+    } catch (error) {
+        next(error)
+    }
+}
+
+exports.fav = async (req, res, next) => {
+    try {
+        let { blog, favs, yo } = req
+        
+        // Verifico si ya el usuario ya agrego el blog a sus favoritos y viceverza
+        // Si es asi elimino el seguimiento en ambas partes
+        
+        if (favs) {
+            blog.favoritos = blog.favoritos.filter(u => u.toString() !== yo.id)
+            yo.favoritos = yo.favoritos.filter(b => b.toString() !== blog.id)
+            await blog.save()
+            await yo.save()
+            return res.status(200).json({ mensaje: 'Blog eliminado de favoritos' })
+        }
+
+        blog.favoritos.push(yo.id)
+        yo.favoritos.push(blog.id)
+        await blog.save()
+        await yo.save()
+        return res.status(200).json({ mensaje: 'Blog agregado a favoritos' })
+
     } catch (error) {
         next(error)
     }

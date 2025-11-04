@@ -23,7 +23,13 @@ const verifyBlogAction = (accion) => async (req, res, next) => {
       if (likes) return res.status(400).json({ mensaje: 'No puedes dar dislike si ya diste like' })
     }
 
+    if(accion === 'favoritos') {
+      const favs = blog.favoritos.some(u => u.toString() === req.user.id)
+      req.favs = favs
+    }
+
     next()
+    
   } catch (error) {
     next(error)
   }

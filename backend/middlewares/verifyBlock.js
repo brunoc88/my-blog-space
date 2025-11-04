@@ -4,10 +4,19 @@ const verifyBlock = async (req, res, next) => {
   try {
     const { id } = req.params
     const { userTo } = req // <-- proveniente de verifyActionBlog
+
+    // Usuario autenticado
+    const yo = await User.findById(req.user.id)
+
+    if (req.favs) {
+      req.yo = yo
+      return next()
+    } //<-- si fav proviente de verifyActionBlog es verdad salteamos este middleware
+
     // Usuario objetivo
     let user = ''
     if (userTo) {
-      user = await User.findById(userTo.id) 
+      user = await User.findById(userTo.id)
     } else {
       user = await User.findById(id)
     }
@@ -15,8 +24,6 @@ const verifyBlock = async (req, res, next) => {
     if (!user) return res.status(404).json({ mensaje: 'Cuenta no encontrada' })
     if (user.suspendida) return res.status(403).json({ mensaje: 'Cuenta eliminada' })
 
-    // Usuario autenticado
-    const yo = await User.findById(req.user.id)
 
     // Chequeamos bloqueos (aseguramos que existan arrays)
     const misBloqueados = yo.bloqueos || []
