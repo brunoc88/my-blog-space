@@ -3,7 +3,7 @@ const User = require('../../models/user')
 
 const blogPermissions = (accion) => async (req, res, next) => {
   try {
-    const { id } = req.params
+    const { id, idComment } = req.params
     const blog = await Blog.findById(id)
 
     if (!blog) return res.status(404).json({ mensaje: 'No se encontró blog' })
@@ -37,9 +37,10 @@ const blogPermissions = (accion) => async (req, res, next) => {
     }
 
     if (accion === 'editar comentario') {
-      const { idComment } = req.params
+
       const comment = blog.comentarios.id(idComment) //<-- metodo especial de busqueda de mongoose
       //siver para buscar especificamente subdocumentos. Devuelve directamente un subdocumento
+
       if (!comment) {
         return res.status(404).json({ mensaje: 'Comentario no encontrado' })
       }
@@ -47,7 +48,8 @@ const blogPermissions = (accion) => async (req, res, next) => {
       if (comment.usuario.toString() !== req.user.id) {
         return res.status(403).json({ mensaje: 'No tienes permiso para editar este comentario' })
       }
-      req.comment = comment
+
+      req.comment = comment // mantiene el subdocumento accesible
     }
 
     req.blog = blog

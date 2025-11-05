@@ -43,7 +43,6 @@ const verifyBlock = async (req, res, next) => {
     next()
 
   } catch (error) {
-    console.log('ERROR EN VERIFYBLOCK',error)
     next(error)
   }
 }

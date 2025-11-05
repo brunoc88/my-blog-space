@@ -14,10 +14,6 @@ const comentarioSchema = new mongoose.Schema({
   fecha: {
     type: Date,
     default: Date.now
-  },
-  estado: {
-    type: Boolean,
-    default: true
   }
 })
 

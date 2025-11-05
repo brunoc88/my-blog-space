@@ -126,6 +126,8 @@ describe('PATCH /api/blog/eliminar', () => {
                 .expect(200)
 
             expect(res.body.mensaje).toBe('Blog eliminado correctamente')
+            const blog = await Blog.findById(blogs[0].id)
+            expect(blog.estado).toBe(false)
         })
         test('Blog de autor rol comun eliminado por admin', async () => {
             const res = await api

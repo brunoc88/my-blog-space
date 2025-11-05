@@ -8,7 +8,7 @@ Terminar documentacion
 
 SOLICITUDES GET
 
-- Mi perfil, perfiles, solicitudes, blogs
+- Mi perfil, perfiles, solicitudes, blogs, seguidos, baneados
 
 SUGERENCIAS:
 

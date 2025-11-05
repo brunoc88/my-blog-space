@@ -7,6 +7,7 @@ const unknowEndpoint = require('./middlewares/unknowEndpoint')
 const errorHandler = require('./middlewares/errorHandler')
 const { tokenExtractor } = require('./middlewares/authMiddleware')
 const morgan = require('morgan')
+const cors = require('cors')
 
 //importacion de rutas
 const loginRouter = require('./routes/login')
@@ -16,6 +17,7 @@ const blogRouter = require('./routes/blog')
 
 //aplicacion de middlewares
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')))
+app.use(cors())
 app.use(express.json())
 app.use(tokenExtractor)
 

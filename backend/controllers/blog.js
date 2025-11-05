@@ -190,17 +190,23 @@ exports.comentar = async (req, res, next) => {
 }
 
 exports.editarComentario = async (req, res, next) => {
-  try {
-    const { blog, mensaje, comment } = req
+    try {
+        const { blog, mensaje } = req
+        
+        // se tuvo que optar por este metodo
+        // Ya que no se realizaba el cambio de comentario
+        await Blog.updateOne(
+            { _id: blog.id, 'comentarios._id': req.params.idComment },
+            { $set: { 'comentarios.$.mensaje': mensaje } }
+        )
 
-    comment.mensaje = mensaje
-    await blog.save()
-
-    await comment.populate('usuario', 'userName imagen') 
-
-    res.status(200).json({ mensaje: 'Comentario editado', comentario: comment })
-  } catch (error) {
-    next(error)
-  }
+        return res.status(200).json({
+            mensaje: 'Comentario editado',
+            //comentario: comentarioActualizado
+        })
+    } catch (error) {
+        next(error)
+    }
 }
+
 

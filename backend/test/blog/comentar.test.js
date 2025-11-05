@@ -98,7 +98,7 @@ describe('POST /api/blog/:id/comentar', () => {
         })
 
         test('Realizar comentario a blog privado', async () => {
-           
+
             const res = await api
                 .post(`/api/blog/${blogs[1].id}/comentar`)
                 .send({ mensaje: 'Muy buen blog!' })
@@ -110,7 +110,7 @@ describe('POST /api/blog/:id/comentar', () => {
         })
 
         test('Realizar comentario a blog publico pero con comentarios deshabilitados', async () => {
-           
+
             const res = await api
                 .post(`/api/blog/${blogs[3].id}/comentar`)
                 .send({ mensaje: 'Muy buen blog!' })
@@ -123,6 +123,141 @@ describe('POST /api/blog/:id/comentar', () => {
     })
 })
 
+describe('PATCH /api/blog/:id/comentar/:idComment', () => {
+    describe('Validaciones', () => {
+        test('Editar comentario no siendo el autor del mismo', async () => {
+            // comento primero
+            const mensaje = 'Muy buen blog, muy interesante!'
+
+            await api
+                .post(`/api/blog/${blogs[0].id}/comentar`)
+                .send({ mensaje })
+                .set('Authorization', `Bearer ${token2}`)
+                .expect(201)
+
+
+            const blog = await Blog.findById(blogs[0].id)
+            const res = await api
+                .patch(`/api/blog/${blogs[0].id}/comentar/${blog.comentarios[0].id}`)
+                .send({ mensaje: 'La verdad es que esta muy mal' })
+                .set('Authorization', `Bearer ${token}`)
+                .expect(403)
+
+            expect(res.body).toHaveProperty('mensaje')
+            expect(res.body.mensaje).toBe('No tienes permiso para editar este comentario')
+        })
+
+        test('Editar comentario en blog con comentarios deshabilidatos', async () => {
+            // comento primero
+            const mensaje = 'Muy buen blog, muy interesante!'
+
+            await api
+                .post(`/api/blog/${blogs[0].id}/comentar`)
+                .send({ mensaje })
+                .set('Authorization', `Bearer ${token2}`)
+                .expect(201)
+
+
+            // Act: deshabilito comentarios en el blog
+
+            const blog = await Blog.findById(blogs[0].id)
+            blog.permitirComentarios = false
+            await blog.save()
+
+            // Act: trato de editar mi comentario 
+            const res = await api
+                .patch(`/api/blog/${blogs[0].id}/comentar/${blog.comentarios[0].id}`)
+                .send({ mensaje: 'La verdad es que esta muy mal' })
+                .set('Authorization', `Bearer ${token2}`)
+                .expect(400)
+
+            expect(res.body).toHaveProperty('mensaje')
+            expect(res.body.mensaje).toBe('El autor deshabilito los comentarios')
+        })
+
+        test('Editar comentario estando bloqueados', async () => {
+            // comento primero
+            const mensaje = 'Muy buen blog, muy interesante!'
+
+            await api
+                .post(`/api/blog/${blogs[0].id}/comentar`)
+                .send({ mensaje })
+                .set('Authorization', `Bearer ${token2}`)
+                .expect(201)
+
+
+            // bloqueo al usuario que comento
+
+            await api.patch(`/api/user/bloquear/${users[1].id}`).set('Authorization', `Bearer ${token}`)
+
+            // intento editar el comentario del usuario bloqueado
+
+            const blog = await Blog.findById(blogs[0].id)
+            const res = await api
+                .patch(`/api/blog/${blogs[0].id}/comentar/${blog.comentarios[0].id}`)
+                .send({ mensaje: 'La verdad es que esta muy mal' })
+                .set('Authorization', `Bearer ${token2}`)
+                .expect(400)
+
+            expect(res.body).toHaveProperty('mensaje')
+            expect(res.body.mensaje).toBe(`${users[0].userName} te ha bloqueado`)
+        })
+
+        test('Editar comentario eliminado', async () => {
+            // comento primero
+            const mensaje = 'Muy buen blog, muy interesante!'
+
+            await api
+                .post(`/api/blog/${blogs[0].id}/comentar`)
+                .send({ mensaje })
+                .set('Authorization', `Bearer ${token2}`)
+                .expect(201)
+
+            // elimino comentario
+
+            const blog = await Blog.findById(blogs[0].id)
+            const commentId = blog.comentarios[0]._id.toString()
+
+            blog.comentarios = blog.comentarios.filter(c => c._id.toString() !== commentId)
+            await blog.save()
+
+            const res = await api
+                .patch(`/api/blog/${blogs[0].id}/comentar/${commentId}`)
+                .send({ mensaje: 'La verdad es que esta muy mal' })
+                .set('Authorization', `Bearer ${token2}`)
+                .expect(404)
+
+            expect(res.body.mensaje).toBe('Comentario no encontrado')
+        })
+    })
+
+    test('Editar comentario sin problemas', async () => {
+        // comento primero
+        const mensaje = 'Muy buen blog, muy interesante!'
+
+        await api
+            .post(`/api/blog/${blogs[0].id}/comentar`)
+            .send({ mensaje })
+            .set('Authorization', `Bearer ${token2}`)
+            .expect(201)
+
+        let blog = await Blog.findById(blogs[0].id)
+        const comentarioId = blog.comentarios[0].id
+        const comentarioPrevio = blog.comentarios.id(comentarioId)
+        
+        const res = await api
+            .patch(`/api/blog/${blogs[0].id}/comentar/${comentarioId}`)
+            .send({ mensaje: 'La verdad es que esta muy mal' })
+            .set('Authorization', `Bearer ${token2}`)
+            .expect(200)
+
+        blog = await Blog.findById(blogs[0].id).select('comentarios')
+        // Busco por id
+        const comentarioActualizado = blog.comentarios.id(comentarioId)
+        expect(res.body).toHaveProperty('mensaje', 'Comentario editado')
+        expect(comentarioActualizado.mensaje).toBe('la verdad es que esta muy mal')
+    })
+})
 afterAll(async () => {
     await mongoose.connection.close()
 })  

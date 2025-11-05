@@ -29,9 +29,9 @@ const verifyBlogAction = (accion) => async (req, res, next) => {
       req.favs = favs
     }
 
-    if (accion === 'comentar' || accion === 'editar') {
+    if (accion === 'comentar' || accion === 'editar comentario') {
       let { mensaje } = req.body
-
+      
       // Sanitizacion
       mensaje = mensaje?.trim().toLowerCase()
       const commentError = commentValidations(mensaje)
@@ -43,7 +43,6 @@ const verifyBlogAction = (accion) => async (req, res, next) => {
     next()
 
   } catch (error) {
-    console.log('ERROR EN VERIFYBLOGACTION',error)
     next(error)
   }
 }
