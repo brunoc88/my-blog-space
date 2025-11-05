@@ -58,8 +58,8 @@ El sistema implementa autenticación JWT, control de roles (usuarios y administr
 * **Comentar:** cualquier usuario autenticado.
 * **Editar:** solo el autor del comentario.
 * **Eliminar:** puede hacerlo el autor del comentario, el autor del blog o un admin.
-
   * No hay privilegios especiales para admins (pueden eliminar comentarios de admins también).
+* **Like:** se puede dar like a un comentario.
 
 ### 🔗 Seguimientos
 
