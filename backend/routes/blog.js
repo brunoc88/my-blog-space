@@ -30,5 +30,7 @@ router.post('/:id/comentar',verifyBlogAction('comentar'), verifyBlock, blogContr
 
 router.patch('/:id/comentar/:idComment', blogPermissions('editar comentario'), verifyBlogAction('editar comentario'), verifyBlock, blogController.editarComentario)
 
+router.delete('/:id/comentar/:idComment', blogPermissions('eliminar comentario'), verifyBlock, blogController.eliminarComentario)
+
 
 module.exports = router

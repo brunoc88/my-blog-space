@@ -11,7 +11,8 @@ const api = supertest(app)
 let users = null
 let blogs = null
 let token = null
-let token2 = null
+let token2 = null // user comun
+let token3 = null // user comun
 
 
 beforeAll(async () => {
@@ -37,9 +38,11 @@ beforeEach(async () => {
 
     const res = await api.post('/api/login').send({ user: users[0].userName, password: 'sekret' })
     const res2 = await api.post('/api/login').send({ user: users[1].userName, password: 'sekret' })
+    const res3 = await api.post('/api/login').send({ user: users[4].userName, password: 'sekret' })
 
     token = res.body.token
     token2 = res2.body.token
+    token3 = res3.body.token
 
 })
 
@@ -243,8 +246,7 @@ describe('PATCH /api/blog/:id/comentar/:idComment', () => {
 
         let blog = await Blog.findById(blogs[0].id)
         const comentarioId = blog.comentarios[0].id
-        const comentarioPrevio = blog.comentarios.id(comentarioId)
-        
+
         const res = await api
             .patch(`/api/blog/${blogs[0].id}/comentar/${comentarioId}`)
             .send({ mensaje: 'La verdad es que esta muy mal' })
@@ -257,6 +259,112 @@ describe('PATCH /api/blog/:id/comentar/:idComment', () => {
         expect(res.body).toHaveProperty('mensaje', 'Comentario editado')
         expect(comentarioActualizado.mensaje).toBe('la verdad es que esta muy mal')
     })
+})
+
+describe('DELETE /api/blog/:id/comentar/:idComment', () => {
+    describe('Validaciones: Eliminar comentario', () => {
+        test('No siendo autor del mismo, ni admin ni autor del blog', async () => {
+            const mensaje = 'Muy buen blog, muy interesante!'
+            await api
+                .post(`/api/blog/${blogs[0].id}/comentar`)
+                .send({ mensaje })
+                .set('Authorization', `Bearer ${token2}`)
+                .expect(201)
+
+            // busco el id del comentario
+            let blog = await Blog.findById(blogs[0].id)
+            const comentarioId = blog.comentarios[0].id
+
+            // Trato de eliminarlo con un usuario comun
+            const res = await api
+                .delete(`/api/blog/${blogs[0].id}/comentar/${comentarioId}`)
+                .set('Authorization', `Bearer ${token3}`)
+                .expect(403)
+
+            expect(res.body).toHaveProperty('mensaje')
+            expect(res.body.mensaje).toBe('No tienes permiso para realizar esta acción')
+        })
+
+        test('Estado bloqueado por el autor del blog', async () => {
+            // comento primero
+            const mensaje = 'Muy buen blog, muy interesante!'
+
+            await api
+                .post(`/api/blog/${blogs[0].id}/comentar`)
+                .send({ mensaje })
+                .set('Authorization', `Bearer ${token2}`)
+                .expect(201)
+
+
+            // bloqueo al usuario que comento
+
+            const block = await api
+                .patch(`/api/user/bloquear/${users[1].id}`)
+                .set('Authorization', `Bearer ${token}`)
+                .expect(200)
+
+            expect(block.body).toHaveProperty('mensaje')
+            expect(block.body.mensaje).toBe('Usuario bloqueado')
+
+            // intento eliminar el comentario del usuario bloqueado
+
+            const blog = await Blog.findById(blogs[0].id)
+            const res = await api
+                .delete(`/api/blog/${blogs[0].id}/comentar/${blog.comentarios[0].id}`)
+                .set('Authorization', `Bearer ${token2}`)
+                .expect(400)
+            
+            expect(res.body).toHaveProperty('mensaje')
+            expect(res.body.mensaje).toBe(`${users[0].userName} te ha bloqueado`)
+        })
+    })
+
+    describe('Eliminar comentario segun:', () => {
+        test('Siendo el autor del comentario', async () => {
+            const mensaje = 'Muy buen blog, muy interesante!'
+            await api
+                .post(`/api/blog/${blogs[0].id}/comentar`)
+                .send({ mensaje })
+                .set('Authorization', `Bearer ${token2}`)
+                .expect(201)
+
+            // busco el id del comentario
+            let blog = await Blog.findById(blogs[0].id)
+            const comentarioId = blog.comentarios[0].id
+
+            const res = await api
+                .delete(`/api/blog/${blogs[0].id}/comentar/${comentarioId}`)
+                .send({ mensaje: 'La verdad es que esta muy mal' })
+                .set('Authorization', `Bearer ${token2}`)
+                .expect(200)
+
+            expect(res.body).toHaveProperty('mensaje')
+            expect(res.body.mensaje).toBe('Comentario eliminado exitosamente')
+        })
+
+        test('Siendo el autor del blog', async () => {
+            const mensaje = 'Muy buen blog, muy interesante!'
+            await api
+                .post(`/api/blog/${blogs[0].id}/comentar`)
+                .send({ mensaje })
+                .set('Authorization', `Bearer ${token2}`)
+                .expect(201)
+
+            // busco el id del comentario
+            let blog = await Blog.findById(blogs[0].id)
+            const comentarioId = blog.comentarios[0].id
+
+            const res = await api
+                .delete(`/api/blog/${blogs[0].id}/comentar/${comentarioId}`)
+                .send({ mensaje: 'La verdad es que esta muy mal' })
+                .set('Authorization', `Bearer ${token}`)
+                .expect(200)
+
+            expect(res.body).toHaveProperty('mensaje')
+            expect(res.body.mensaje).toBe('Comentario eliminado exitosamente')
+        })
+    })
+
 })
 afterAll(async () => {
     await mongoose.connection.close()

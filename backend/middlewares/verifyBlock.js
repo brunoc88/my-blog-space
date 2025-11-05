@@ -20,7 +20,7 @@ const verifyBlock = async (req, res, next) => {
     } else {
       user = await User.findById(id)
     }
-
+   
     if (!user) return res.status(404).json({ mensaje: 'Cuenta no encontrada' })
     if (user.suspendida) return res.status(403).json({ mensaje: 'Cuenta eliminada' })
 
@@ -30,7 +30,7 @@ const verifyBlock = async (req, res, next) => {
     const susBloqueados = user.bloqueos || []
 
 
-    if (misBloqueados.includes(id)) {
+    if (misBloqueados.includes(user.id)) {
       return res.status(400).json({ mensaje: `Tienes bloqueado a ${user.userName}` })
     }
 

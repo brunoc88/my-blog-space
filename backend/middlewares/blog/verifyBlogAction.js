@@ -3,7 +3,7 @@ const commentValidations = require('../../utils/commentValidations')
 
 const verifyBlogAction = (accion) => async (req, res, next) => {
   try {
-    const { id, idComments } = req.params
+    const { id} = req.params
     const blog = await Blog.findById(id)
 
     if (!blog) return res.status(404).json({ mensaje: 'No se encontró el blog' })

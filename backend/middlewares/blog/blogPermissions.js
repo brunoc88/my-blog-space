@@ -40,7 +40,7 @@ const blogPermissions = (accion) => async (req, res, next) => {
 
       const comment = blog.comentarios.id(idComment) //<-- metodo especial de busqueda de mongoose
       //siver para buscar especificamente subdocumentos. Devuelve directamente un subdocumento
-
+      
       if (!comment) {
         return res.status(404).json({ mensaje: 'Comentario no encontrado' })
       }
@@ -52,6 +52,26 @@ const blogPermissions = (accion) => async (req, res, next) => {
       req.comment = comment // mantiene el subdocumento accesible
     }
 
+    if (accion === 'eliminar comentario') {
+      const comment = blog.comentarios.id(idComment)
+
+      if (!comment) {
+        return res.status(404).json({ mensaje: 'Comentario no encontrado' })
+      }
+
+      // Permisos
+      const commentAuthor = comment.usuario.toString() === req.user.id        // autor del comentario
+      const blogAuthor = blog.autor.toString() === req.user.id                // autor del blog
+      const isAdmin = req.user.rol === 'admin'                                // usuario con rol admin
+
+      // Si NO es autor del comentario, ni del blog, ni admin → prohibido
+      if (!commentAuthor && !blogAuthor && !isAdmin) {
+        return res.status(403).json({
+          mensaje: 'No tienes permiso para realizar esta acción'
+        })
+      }
+      req.userTo = blog.autor
+    }
     req.blog = blog
     next()
 

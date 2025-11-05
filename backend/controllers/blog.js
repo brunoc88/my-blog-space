@@ -192,7 +192,7 @@ exports.comentar = async (req, res, next) => {
 exports.editarComentario = async (req, res, next) => {
     try {
         const { blog, mensaje } = req
-        
+
         // se tuvo que optar por este metodo
         // Ya que no se realizaba el cambio de comentario
         await Blog.updateOne(
@@ -200,13 +200,29 @@ exports.editarComentario = async (req, res, next) => {
             { $set: { 'comentarios.$.mensaje': mensaje } }
         )
 
+        const blogActualizado = await Blog.findById(blog._id)
+            .populate('comentarios.usuario', 'userName imagen')
+
+        const comentarioActualizado = blogActualizado.comentarios.id(req.params.idComment)
+
         return res.status(200).json({
             mensaje: 'Comentario editado',
-            //comentario: comentarioActualizado
+            comentario: comentarioActualizado
         })
     } catch (error) {
         next(error)
     }
 }
 
+exports.eliminarComentario = async (req, res, next) => {
+    try {
+        let {blog, idComment} = req
+
+        blog.comentarios = blog.comentarios.filter(c => c.toString() !== idComment)
+        await blog.save()
+        return res.status(200).json({mensaje:'Comentario eliminado exitosamente'})
+    } catch (error) {
+        next(error)
+    }
+}
 
