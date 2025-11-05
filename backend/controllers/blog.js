@@ -216,11 +216,36 @@ exports.editarComentario = async (req, res, next) => {
 
 exports.eliminarComentario = async (req, res, next) => {
     try {
-        let {blog, idComment} = req
+        let { blog, idComment } = req
 
         blog.comentarios = blog.comentarios.filter(c => c.toString() !== idComment)
         await blog.save()
-        return res.status(200).json({mensaje:'Comentario eliminado exitosamente'})
+        return res.status(200).json({ mensaje: 'Comentario eliminado exitosamente' })
+    } catch (error) {
+        next(error)
+    }
+}
+
+exports.likeComentario = async (req, res, next) => {
+    try {
+        let { blog, comment, yo } = req
+
+        // pregunto si mi like ya esta registrado
+        // Verificar si ya le dio like
+        const yaDioLike = comment.likes.some(like => like.toString() === yo.id)
+
+        if (yaDioLike) {
+            comment.likes = comment.likes.filter(like => like.toString() !== yo.id)
+            await blog.save()
+            return res.status(200).json({ mensaje: 'Like quitado' })
+        }
+
+        // Agregar like
+        comment.likes.push(yo.id)
+        await blog.save()
+
+        return res.status(200).json({ mensaje: 'Diste like' })
+
     } catch (error) {
         next(error)
     }

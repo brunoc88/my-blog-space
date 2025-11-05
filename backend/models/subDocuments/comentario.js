@@ -14,7 +14,13 @@ const comentarioSchema = new mongoose.Schema({
   fecha: {
     type: Date,
     default: Date.now
-  }
+  },
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ]
 })
 
 module.exports = comentarioSchema

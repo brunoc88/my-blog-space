@@ -72,6 +72,17 @@ const blogPermissions = (accion) => async (req, res, next) => {
       }
       req.userTo = blog.autor
     }
+
+    if(accion === 'like comentario') {
+      const comment = blog.comentarios.id(idComment)
+
+      if (!comment) {
+        return res.status(404).json({ mensaje: 'Comentario no encontrado' })
+      }
+
+      req.userTo = blog.autor
+      req.comment = comment
+    }
     req.blog = blog
     next()
 

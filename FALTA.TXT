@@ -1,14 +1,10 @@
 Pendientes:
 
-Comentar: 
-
-- rutas y controles
-
 Terminar documentacion
 
 SOLICITUDES GET
 
-- Mi perfil, perfiles, solicitudes, blogs, seguidos, baneados
+- Mi perfil, perfiles, solicitudes, blogs, seguidos, baneados, etiquetas
 
 SUGERENCIAS:
 

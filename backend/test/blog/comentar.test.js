@@ -313,7 +313,7 @@ describe('DELETE /api/blog/:id/comentar/:idComment', () => {
                 .delete(`/api/blog/${blogs[0].id}/comentar/${blog.comentarios[0].id}`)
                 .set('Authorization', `Bearer ${token2}`)
                 .expect(400)
-            
+
             expect(res.body).toHaveProperty('mensaje')
             expect(res.body.mensaje).toBe(`${users[0].userName} te ha bloqueado`)
         })
@@ -365,6 +365,64 @@ describe('DELETE /api/blog/:id/comentar/:idComment', () => {
         })
     })
 
+})
+
+describe('PATCH /api/blog/id:/comentar/:idComment/like', () => {
+    test('Like un comentario', async () => {
+        // Creo un comentario
+        const mensaje = 'Muy buen blog, muy interesante!'
+        await api
+            .post(`/api/blog/${blogs[0].id}/comentar`)
+            .send({ mensaje })
+            .set('Authorization', `Bearer ${token2}`)
+            .expect(201)
+
+        // busco el id del comentario
+        let blog = await Blog.findById(blogs[0].id)
+        const comentarioId = blog.comentarios[0].id
+
+        // Darle like
+
+        const res = await api
+            .patch(`/api/blog/${blogs[0].id}/comentar/${comentarioId}/like`)
+            .set('Authorization', `Bearer ${token3}`)
+            .expect(200)
+
+        expect(res.body).toHaveProperty('mensaje')
+        expect(res.body.mensaje).toBe('Diste like')
+
+    })
+
+    test('Quitar like de un comentario', async () => {
+        // Creo un comentario
+        const mensaje = 'Muy buen blog, muy interesante!'
+        await api
+            .post(`/api/blog/${blogs[0].id}/comentar`)
+            .send({ mensaje })
+            .set('Authorization', `Bearer ${token2}`)
+            .expect(201)
+
+        // busco el id del comentario
+        let blog = await Blog.findById(blogs[0].id)
+        const comentarioId = blog.comentarios[0].id
+
+        // Darle like
+
+        await api
+            .patch(`/api/blog/${blogs[0].id}/comentar/${comentarioId}/like`)
+            .set('Authorization', `Bearer ${token3}`)
+            .expect(200)
+
+        // Quitar like 
+        const res = await api
+            .patch(`/api/blog/${blogs[0].id}/comentar/${comentarioId}/like`)
+            .set('Authorization', `Bearer ${token3}`)
+            .expect(200)
+
+        expect(res.body).toHaveProperty('mensaje')
+        expect(res.body.mensaje).toBe('Like quitado')
+
+    })
 })
 afterAll(async () => {
     await mongoose.connection.close()
