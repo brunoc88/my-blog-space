@@ -4,15 +4,19 @@ Terminar documentacion
 
 SOLICITUDES GET
 
-- Mi perfil, perfiles, blogs, seguidos
+- Mi perfil, perfiles, blogs
 
 SUGERENCIAS:
 
 LA PROXIMA VEZ PODRIAMOS HACER UNA FUNCION EN UTIL PARA VERIFICAR 
 EXISTENCIA O ESTADO DE UN MODELO
 
+MEJORAR LOS ENDPOINT
+
 EJEMPLO:
 
 checkUser: se comprueba si existe o si se eliminino
+
+/use/:id/seguir
 
 

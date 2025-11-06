@@ -214,8 +214,8 @@ exports.listaDeBloqueados = async (req, res, next) => {
       .populate('bloqueos', 'userName imagen suspendida')
 
     let bloqueados = user.bloqueos.filter(u => u.suspendida === false)
-    
-    return res.status(200).json({bloqueados, cantidad: bloqueados.length})
+
+    return res.status(200).json({ bloqueados, cantidad: bloqueados.length })
   } catch (error) {
     next(error)
   }
@@ -228,18 +228,35 @@ exports.listaDeSolicitudes = async (req, res, next) => {
       .populate('solicitudes', 'userName imagen suspendida')
 
     let solicitudes = user.solicitudes.filter(u => u.suspendida === false)
-    
-    return res.status(200).json({solicitudes, cantidad: solicitudes.length})
+
+    return res.status(200).json({ solicitudes, cantidad: solicitudes.length })
   } catch (error) {
     next(error)
   }
 }
 
-// temporales: falta populate
-exports.miPerfil = async (req, res, next) => {
+exports.listaDeSeguidos = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id)
-    return res.status(200).json(user)
+      .select('seguidos')
+      .populate('seguidos', 'userName imagen suspendida')
+
+    let seguidos = user.seguidos.filter(u => u.suspendida === false)
+    return res.status(200).json({ seguidos, cantidad: seguidos.length })
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.listaDeSeguidores = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id)
+      .select('seguidores')
+      .populate('seguidores', 'userName imagen suspendida')
+
+    let seguidores = user.seguidores.filter(u => u.suspendida === false)
+
+    return res.status(200).json({ seguidores, cantidad: seguidores.length })
   } catch (error) {
     next(error)
   }
@@ -248,8 +265,14 @@ exports.miPerfil = async (req, res, next) => {
 exports.perfil = async (req, res, next) => {
   try {
     const { id } = req.params
-    const user = await User.findById(id)
-    return res.status(200).json(user)
+    let user = ''
+    if (id) {
+      user = await User.findById(id)
+    } else {
+      user = await User.findById(req.user.id)
+    }
+
+    return res.status(200).json({user})
   } catch (error) {
     next(error)
   }

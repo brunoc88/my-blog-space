@@ -61,12 +61,46 @@ describe('GET /api/user/solicitudes', () => {
         // Consultamos solicitudes
 
         const res = await api
-        .get('/api/user/solicitudes')
-        .set('Authorization', `Bearer ${token2}`)
-        .expect(200)
+            .get('/api/user/solicitudes')
+            .set('Authorization', `Bearer ${token2}`)
+            .expect(200)
 
         expect(res.body).toHaveProperty('cantidad')
         expect(res.body).toHaveProperty('solicitudes')
+        expect(res.body.cantidad).toBe(1)
+    })
+})
+
+describe('GET /api/user/seguidos', () => {
+    test('Lista de seguidos', async () => {
+        // seguir una cuenta
+        await api.patch(`/api/user/seguir/${users[0].id}`).set('Authorization', `Bearer ${token2}`)
+
+        // consulto mi lista de seguidos
+        const res = await api
+        .get(`/api/user/seguidos`)
+        .set('Authorization', `Bearer ${token2}`)
+        .expect(200)
+
+        expect(res.body).toHaveProperty('seguidos')
+        expect(res.body).toHaveProperty('cantidad')
+        expect(res.body.cantidad).toBe(1)
+    })
+})
+
+describe('GET /api/user/seguidores', () => {
+    test('Lista de seguidores', async () => {
+        // seguir una cuenta
+        await api.patch(`/api/user/seguir/${users[0].id}`).set('Authorization', `Bearer ${token2}`)
+
+        // consulto mi lista de seguidores
+        const res = await api
+        .get(`/api/user/seguidores`)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200)
+
+        expect(res.body).toHaveProperty('seguidores')
+        expect(res.body).toHaveProperty('cantidad')
         expect(res.body.cantidad).toBe(1)
     })
 })

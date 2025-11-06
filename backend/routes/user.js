@@ -46,9 +46,12 @@ router.get('/bloqueados', userController.listaDeBloqueados)
 
 router.get('/solicitudes', userController.listaDeSolicitudes)
 
+router.get('/seguidos', userController.listaDeSeguidos)
 
-// provisional: falta populate
-router.get('/miPerfil', userController.miPerfil)
+router.get('/seguidores', userController.listaDeSeguidores)
+
+// working on
+router.get('/miPerfil', userController.perfil)
 
 router.get('/perfil/:id', verifyBlock, userController.perfil)
 
