@@ -42,6 +42,10 @@ router.patch('/solicitud/aceptar/:id', verifyBlock, verifyAction('solicitud'), u
 
 router.patch('/solicitud/rechazar/:id', verifyAction('solicitud'), userController.rechazarSolicitud)
 
+router.get('/bloqueados', userController.listaDeBloqueados)
+
+router.get('/solicitudes', userController.listaDeSolicitudes)
+
 
 // provisional: falta populate
 router.get('/miPerfil', userController.miPerfil)

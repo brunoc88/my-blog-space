@@ -207,6 +207,34 @@ exports.rechazarSolicitud = async (req, res, next) => {
   }
 }
 
+exports.listaDeBloqueados = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id)
+      .select('bloqueos')
+      .populate('bloqueos', 'userName imagen suspendida')
+
+    let bloqueados = user.bloqueos.filter(u => u.suspendida === false)
+    
+    return res.status(200).json({bloqueados, cantidad: bloqueados.length})
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.listaDeSolicitudes = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id)
+      .select('solicitudes')
+      .populate('solicitudes', 'userName imagen suspendida')
+
+    let solicitudes = user.solicitudes.filter(u => u.suspendida === false)
+    
+    return res.status(200).json({solicitudes, cantidad: solicitudes.length})
+  } catch (error) {
+    next(error)
+  }
+}
+
 // temporales: falta populate
 exports.miPerfil = async (req, res, next) => {
   try {

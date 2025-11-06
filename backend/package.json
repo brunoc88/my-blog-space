@@ -6,10 +6,10 @@
     "start": "cross-env NODE_ENV=start node index.js",
     "dev": "cross-env NODE_ENV=dev nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
-    "test:u": "npm test test/user/",
+    "test:u": "npm test test/user/listas.test.js",
     "test:l": "npm test test/login/",
-    "test:t": "npm test test/tag/obtener.test.js",
-    "test:b": "npm test test/blog/comentar.test.js",
+    "test:t": "npm test test/tag/",
+    "test:b": "npm test test/blog/",
     "test:watch": "cross-env NODE_ENV=test jest --watch"
   },
   "keywords": [],

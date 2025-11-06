@@ -4,7 +4,7 @@ Terminar documentacion
 
 SOLICITUDES GET
 
-- Mi perfil, perfiles, solicitudes, blogs, seguidos, baneados, etiquetas
+- Mi perfil, perfiles, blogs, seguidos
 
 SUGERENCIAS:
 
