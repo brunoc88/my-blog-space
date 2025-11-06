@@ -88,3 +88,12 @@ exports.editar = async (req, res, next) => {
         next(error)
     }
 }
+
+exports.lista = async (req, res, next) => {
+    try {
+        const etiquetas = await Tag.find({})
+        return res.status(200).json({ etiquetas })
+    } catch (error) {
+        next(error)
+    }
+}

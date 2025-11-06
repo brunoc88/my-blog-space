@@ -14,6 +14,6 @@ router.patch('/desactivar/:id', tagController.desactivar)
 
 router.patch('/activar/:id', tagController.activar)
 
-
+router.get('/lista', tagController.lista)
 
 module.exports = router

@@ -108,6 +108,3 @@ El sistema implementa autenticación JWT, control de roles (usuarios y administr
 
 ---
 
-## 📄 Licencia
-
-Proyecto desarrollado por **Bruno** — uso educativo y demostrativo.
