@@ -1,4 +1,5 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 exports.crear = async (req, res, next) => {
     try {
@@ -283,4 +284,56 @@ exports.getBlog = async (req, res, next) => {
         next(error)
     }
 }
+
+exports.allFollowingUsersBlogs = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id).select('seguidos bloqueados')
+
+    const blogs = await Blog.find({
+      estado: true,
+      visibilidad: true,
+      autor: { $in: user.seguidos, $nin: user.bloqueados }
+    })
+      .populate({
+        path: 'autor',
+        select: 'userName imagen seguidores bloqueados estado',
+        match: { estado: true, bloqueados: { $ne: user._id } } // no me bloqueó
+      })
+      .sort({ fecha: -1 })
+
+    const cleanBlogs = blogs.filter(b => b.autor !== null)
+
+    return res.status(200).json({ blogs: cleanBlogs })
+  } catch (error) {
+    next(error)
+  }
+}
+
+exports.allPublicBlogs = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id).select('seguidos bloqueados')
+
+    // blogs públicos, activos, de autores que NO sigo y que no me bloqueen
+    const blogs = await Blog.find({
+      estado: true,
+      visibilidad: true,
+      autor: { $nin: [...user.seguidos, ...user.bloqueados] } // ni seguidos ni bloqueados por mí
+    })
+      .populate({
+        path: 'autor',
+        select: 'userName imagen seguidores bloqueados estado',
+        match: { estado: true, bloqueados: { $ne: user._id } } // autores activos y que no me bloqueen
+      })
+      .sort({ fecha: -1 })
+
+    // filtrar los blogs cuyo populate devolvió null
+    const cleanBlogs = blogs.filter(b => b.autor !== null)
+
+    return res.status(200).json({ blogs: cleanBlogs })
+  } catch (error) {
+    next(error)
+  }
+}
+
+
 

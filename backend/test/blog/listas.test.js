@@ -46,9 +46,9 @@ beforeEach(async () => {
 describe('GET /api/blog/myblogs', () => {
     test('Obtener lista de mis blogs', async () => {
         const res = await api
-        .get('/api/blog/myblogs')
-        .set('Authorization', `Bearer ${token2}`)
-        .expect(200)
+            .get('/api/blog/myblogs')
+            .set('Authorization', `Bearer ${token2}`)
+            .expect(200)
 
         expect(res.body).toHaveProperty('blogs')
         expect(res.body.blogs.length).toBe(2)
@@ -58,9 +58,9 @@ describe('GET /api/blog/myblogs', () => {
 describe('GET /api/blog/user-blogs/:id', () => {
     test('Obtener lista de blogs de un usuario', async () => {
         const res = await api
-        .get(`/api/blog/user-blogs/${users[1].id}`)
-        .set('Authorization', `Bearer ${token}`)
-        .expect(200)
+            .get(`/api/blog/user-blogs/${users[1].id}`)
+            .set('Authorization', `Bearer ${token}`)
+            .expect(200)
 
         expect(res.body).toHaveProperty('blogs')
         expect(res.body.blogs.length).toBe(1)
@@ -70,15 +70,40 @@ describe('GET /api/blog/user-blogs/:id', () => {
 
         // bloqueo usuario
         await api.patch(`/api/user/bloquear/${users[1].id}`).set('Authorization', `Bearer ${token}`)
-        
+
         // intento ver blogs del usuario que me bloqueo
         const res = await api
-        .get(`/api/blog/user-blogs/${users[0].id}`)
-        .set('Authorization', `Bearer ${token2}`)
-        .expect(400)
+            .get(`/api/blog/user-blogs/${users[0].id}`)
+            .set('Authorization', `Bearer ${token2}`)
+            .expect(400)
 
         expect(res.body).toHaveProperty('mensaje')
         expect(res.body.mensaje).toBe(`${users[0].userName} te ha bloqueado`)
+    })
+})
+
+describe('GET /api/blog/allblogs', () => {
+    test.only('Obtener listas', async () => {
+
+        // sigo algunos usuarios
+        
+            
+        await api
+            .patch(`/api/user/seguir/${users[5].id}`)
+            .set('Authorization', `Bearer ${token}`)
+
+        let user0 = await User.findById(users[0].id).select('seguidos')
+       
+        let user4 = await User.findById(users[5].id).select('seguidores')
+
+        console.log('USER 0 SEGUIDOS', user0)
+        
+        console.log('USER4 SEGUIDORES', user4)
+        
+        await api
+        .get('/api/blog/allblogs')
+        .set('Authorization', `Bearer ${token}`)
+        
     })
 })
 
