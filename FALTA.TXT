@@ -3,8 +3,7 @@ Pendientes:
 Terminar documentacion
 
 SOLICITUDES GET
-
-- Todos los blogs visibles y autor activo
+- Todos los blogs visibles con autor activo de los cuales sigo al auto como tambien los que no sigo
 - mis blogs
 
 SUGERENCIAS:
