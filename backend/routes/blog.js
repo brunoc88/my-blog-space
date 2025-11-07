@@ -38,4 +38,6 @@ router.get('/myblogs', blogController.userBlogs)
 
 router.get('/user-blogs/:id', verifyBlock, blogController.userBlogs)
 
+router.get('/:id', blogPermissions('ver blog'), verifyBlock, blogController.getBlog)
+
 module.exports = router

@@ -262,9 +262,25 @@ exports.userBlogs = async (req, res, next) => {
             // Devuelvo todos mis blogs activos
             blogs = await Blog.find({ autor: req.user.id, estado: true })
         }
-        
+
         return res.status(200).json({ blogs })
     } catch (error) {
         next(error)
     }
 }
+
+exports.getBlog = async (req, res, next) => {
+    try {
+        const { id } = req.params
+
+        const blog = await Blog.findById(id)
+            .populate('tags', 'nombre')
+            .populate('comentarios.usuario', 'userName imagen')
+            .populate('autor', 'userName')
+
+        return res.status(200).json({ blog })
+    } catch (error) {
+        next(error)
+    }
+}
+

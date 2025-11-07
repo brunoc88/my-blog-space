@@ -83,6 +83,14 @@ const blogPermissions = (accion) => async (req, res, next) => {
       req.userTo = blog.autor
       req.comment = comment
     }
+
+    if(accion === 'ver blog') {
+      // Blogs privados solo pueden ser vistos por su autor
+      if(!isSelf && !blog.visibilidad) {
+        return res.status(403).json({ mensaje: 'Blog privado' })
+      }
+      req.userTo = blog.autor
+    }
     req.blog = blog
     next()
 
