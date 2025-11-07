@@ -251,3 +251,20 @@ exports.likeComentario = async (req, res, next) => {
     }
 }
 
+exports.userBlogs = async (req, res, next) => {
+    try {
+        const { id } = req.params
+        let blogs = ''
+        if (id) {
+            // Devuelvo blog activos y publicos del usuario a buscar 
+            blogs = await Blog.find({ autor: id, estado: true, visibilidad: true })
+        } else {
+            // Devuelvo todos mis blogs activos
+            blogs = await Blog.find({ autor: req.user.id, estado: true })
+        }
+        
+        return res.status(200).json({ blogs })
+    } catch (error) {
+        next(error)
+    }
+}

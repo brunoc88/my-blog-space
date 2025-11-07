@@ -34,4 +34,8 @@ router.delete('/:id/comentar/:idComment', blogPermissions('eliminar comentario')
 
 router.patch('/:id/comentar/:idComment/like', blogPermissions('like comentario'), verifyBlock, blogController.likeComentario)
 
+router.get('/myblogs', blogController.userBlogs)
+
+router.get('/user-blogs/:id', verifyBlock, blogController.userBlogs)
+
 module.exports = router
