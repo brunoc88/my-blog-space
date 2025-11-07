@@ -86,7 +86,7 @@ describe('GET /api/blog/user-blogs/:id', () => {
 })
 
 describe('GET /api/blog/allblogs', () => {
-    test.only('Obtener blog de usuarios seguidos', async () => {
+    test('Obtener blog de usuarios seguidos', async () => {
 
         // sigo algunos usuarios activos y blogs activos
         // aqui no hay bloqueo de ningun lado
@@ -138,28 +138,33 @@ describe('GET /api/blog/index', () => {
         // aqui no hay bloqueo de ningun lado
 
         await api
-            .patch(`/api/user/seguir/${users[6].id}`)
-            .set('Authorization', `Bearer ${token}`)
+            .patch(`/api/user/seguir/${users[6].id}`) //fakeuser7
+            .set('Authorization', `Bearer ${token2}`)
 
         await api
-            .patch(`/api/user/seguir/${users[7].id}`)
-            .set('Authorization', `Bearer ${token}`)
+            .patch(`/api/user/seguir/${users[7].id}`) //fakeuser8
+            .set('Authorization', `Bearer ${token2}`)
 
         await api
-            .patch(`/api/user/seguir/${users[8].id}`)
+            .patch(`/api/user/seguir/${users[8].id}`) //fakeuser9
+            .set('Authorization', `Bearer ${token2}`)
+
+        // bloqueo a un fakeuser10 activo y blog activo
+        await api
+            .patch(`/api/user/bloquear/${users[9].id}`)
+            .set('Authorization', `Bearer ${token2}`)
+            .expect(200)
+
+        // fakeuser me bloquea
+        await api
+            .patch(`/api/user/bloquear/${users[1].id}`)
             .set('Authorization', `Bearer ${token}`)
-        /*
-    // bloqueo a un usuario activo y blog activo
-    await api
-        .patch(`/api/user/bloquear/${users[7].id}`)
-        .set('Authorization', `Bearer ${token}`)
-        .expect(200)
-*/
+            .expect(200)
 
         // obtengo listado
         await api
             .get('/api/blog/index')
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', `Bearer ${token2}`)
             .expect(200)
     })
 })

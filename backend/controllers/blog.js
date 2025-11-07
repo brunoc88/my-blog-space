@@ -328,7 +328,7 @@ exports.allPublicBlogs = async (req, res, next) => {
 
         // filtrar los blogs cuyo populate devolvió null
         const cleanBlogs = blogs.filter(b => b.autor !== null)
-        console.log('BLOGS', cleanBlogs)
+        
         return res.status(200).json({ blogs: cleanBlogs })
     } catch (error) {
         next(error)
