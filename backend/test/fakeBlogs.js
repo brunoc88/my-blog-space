@@ -63,12 +63,76 @@ const loadBlogs = async (accion) => {
         permitirComentarios: false,
         autor: users[5].id
     })
+
+    const blog7 = new Blog({
+        titulo: 'Fake Title7',
+        nota: 'ya no se que escribir como nota, ya van 7',
+        tags: [tags[0].id],
+        visibilidad: true,
+        permitirComentarios: false,
+        autor: users[6].id
+    })
+
+    const blog8 = new Blog({
+        titulo: 'Fake Title8',
+        nota: 'ya no se que escribir como nota, ya van 8',
+        tags: [tags[0].id],
+        visibilidad: true,
+        permitirComentarios: false,
+        autor: users[6].id
+    })
+
+
+    const blog9 = new Blog({
+        titulo: 'Fake Title9',
+        nota: 'ya no se que escribir como nota, ya van 9',
+        tags: [tags[0].id],
+        visibilidad: true,
+        permitirComentarios: false,
+        autor: users[7].id
+    })
+
+
+    const blog10 = new Blog({
+        titulo: 'Fake Title10',
+        nota: 'ya no se que escribir como nota, ya van 10',
+        tags: [tags[0].id],
+        visibilidad: true,
+        permitirComentarios: false,
+        autor: users[8].id
+    })
+
+    const blog11 = new Blog({
+        titulo: 'Fake Title11',
+        nota: 'ya no se que escribir como nota, ya van 11',
+        tags: [tags[0].id],
+        visibilidad: true,
+        permitirComentarios: true,
+        autor: users[8].id
+    })
+
+    const blog12 = new Blog({
+        titulo: 'Fake Title12',
+        nota: 'ya no se que escribir como nota, ya van 12',
+        tags: [tags[0].id],
+        visibilidad: true,
+        permitirComentarios: true,
+        autor: users[9].id
+    })
+
+
     await blog.save()
     await blog2.save()
     await blog3.save()
     await blog4.save()
     await blog5.save()
     await blog6.save()
+    await blog7.save()
+    await blog8.save()
+    await blog9.save()
+    await blog10.save()
+    await blog11.save()
+    await blog12.save()
 }
 
 
