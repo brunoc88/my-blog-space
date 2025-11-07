@@ -263,16 +263,25 @@ exports.listaDeSeguidores = async (req, res, next) => {
 }
 
 exports.perfil = async (req, res, next) => {
+  // si el id existe ve el perfil de tal usuario
+  // pero no podra ver sus blog favoritos
+  // caso contrario el usuario puede ver sus blogs favoritos
   try {
     const { id } = req.params
     let user = ''
     if (id) {
       user = await User.findById(id)
     } else {
-      user = await User.findById(req.user.id)
+      user = await User
+        .findById(req.user.id)
+        .populate({
+          path: 'favoritos',
+          match: { estado: true, visibilidad: true },
+          select: 'titulo likes dislikes favoritos comentarios estado visibilidad'
+        })
     }
-
-    return res.status(200).json({user})
+    // devolvemos blogs activos y publicos
+    return res.status(200).json({ user })
   } catch (error) {
     next(error)
   }

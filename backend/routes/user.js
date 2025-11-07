@@ -50,9 +50,8 @@ router.get('/seguidos', userController.listaDeSeguidos)
 
 router.get('/seguidores', userController.listaDeSeguidores)
 
-// working on
 router.get('/miPerfil', userController.perfil)
 
-router.get('/perfil/:id', verifyBlock, userController.perfil)
+router.get('/:id/perfil', verifyBlock, userController.perfil)
 
 module.exports = router

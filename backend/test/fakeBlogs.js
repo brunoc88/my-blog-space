@@ -2,9 +2,9 @@ const Blog = require('../models/blog')
 const { loadUsers, getUsers } = require('./test_helper')
 const { loadTags, getTags } = require('./dummy_tags')
 
-const loadBlogs = async () => {
+const loadBlogs = async (accion) => {
     await loadUsers()
-    await loadTags()
+    if (!accion || accion !== 'noTags') await loadTags() // <-- se puso condicion por testing de perfil.test.js
 
     const tags = await getTags()
     const users = await getUsers()
@@ -55,11 +55,20 @@ const loadBlogs = async () => {
         autor: users[2].id
     })
 
+    const blog6 = new Blog({
+        titulo: 'Fake Title6',
+        nota: 'ya no se que escribir como nota, ya van 6',
+        tags: [tags[0].id],
+        visibilidad: true,
+        permitirComentarios: false,
+        autor: users[5].id
+    })
     await blog.save()
     await blog2.save()
     await blog3.save()
     await blog4.save()
     await blog5.save()
+    await blog6.save()
 }
 
 

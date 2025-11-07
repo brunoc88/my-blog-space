@@ -4,7 +4,8 @@ Terminar documentacion
 
 SOLICITUDES GET
 
-- Mi perfil, perfiles, blogs
+- Todos los blogs visibles y autor activo
+- mis blogs
 
 SUGERENCIAS:
 
