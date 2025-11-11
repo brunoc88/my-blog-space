@@ -1,4 +1,4 @@
-# Ruta: `/tag`
+# Rutas de etiquetas (/api/tag)
 
 Este archivo se definen las rutas encargadas de la creacion, edicion, activacion, desactivacion y el listado de etiquetas de la api.
 Utiliza **middleware de autenticacion** `userExtractor`, **middleware de validacion** `tagValidations`, **middleware de role** `verifyRole(rol)` y un controlador `tagController` para manejar la logica crud de las etiquetas.
