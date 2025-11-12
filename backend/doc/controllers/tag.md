@@ -42,7 +42,7 @@ exports.crearEtiqueta = async (req, res, next) => {
 {
     mensaje:'Etiqueta creada con éxito',
     tag: {
-        id: '690e7d13c9c5a66cb3728509'
+        id: '690e7d13c9c5a66cb3728509',
         nombre:'horror',
         estado: true
     }
@@ -109,7 +109,7 @@ exports.desactivar = async (req, res, next) => {
 {
     mensaje: 'Etiqueda desabilitada',
     tag: {
-        id: '690e7d13c9c5a66cb3728509'
+        id: '690e7d13c9c5a66cb3728509',
         nombre:'horror',
         estado: false
     }
@@ -175,7 +175,7 @@ exports.activar = async (req, res, next) => {
 {
     mensaje: 'Etiqueda desabilitada',
     tag: {
-        id: '690e7d13c9c5a66cb3728509'
+        id: '690e7d13c9c5a66cb3728509',
         nombre:'horror',
         estado: true
     }
@@ -224,7 +224,7 @@ exports.editar = async (req, res, next) => {
 {
     mensaje:'Etiqueta actualizada',
     tag: {
-        id: '690e7d13c9c5a66cb3728509'
+        id: '690e7d13c9c5a66cb3728509',
         nombre:'Terror',
         estado: true
     }
@@ -259,11 +259,12 @@ exports.lista = async (req, res, next) => {
 ```js
 {
     etiquetas: [{
-        id: '690e7d13c9c5a66cb3728509'
+        id: '690e7d13c9c5a66cb3728509',
         nombre:'Terror',
         estado: true
     },
-    {id: '690e7d13c9c5a66cb3728510'
+    {
+        id: '690e7d13c9c5a66cb3728510',
         nombre:'Accion',
         estado: true
     }
