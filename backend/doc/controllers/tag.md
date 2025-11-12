@@ -263,9 +263,10 @@ exports.lista = async (req, res, next) => {
         nombre:'Terror',
         estado: true
     },
-    id: '690e7d13c9c5a66cb3728510'
+    {id: '690e7d13c9c5a66cb3728510'
         nombre:'Accion',
         estado: true
+    }
     ]
 }
 
