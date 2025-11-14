@@ -74,5 +74,5 @@ Permite importar este middleware en ruta de usuario:
 router.post('/recuperar-password', limiter, recoveryPasswordValidations, recoveryPasswordGuard, userController.recuperarPassword)
 ```
 
----
+
 
