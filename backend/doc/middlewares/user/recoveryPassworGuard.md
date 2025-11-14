@@ -46,7 +46,7 @@ const recoveryPasswordGuard = async (req, res, next) =>
 
 - Si la cuenta existe pero esta suspendia(`true`) retornara un **403**.
 
-- Si la pregunta o la respuesta ingresada no concide con la registrada en la base de datos se responde con **404 Bad Request**.
+- Si la pregunta o la respuesta ingresada no coincide con la registrada en la base de datos se responde con **404 Bad Request**.
 
 ---
 
