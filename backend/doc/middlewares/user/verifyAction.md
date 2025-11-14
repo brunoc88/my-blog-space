@@ -1,6 +1,6 @@
 # Middleware: verifyAction
 
-Se encarga de verifcar las acciones entre usuarios: bloqueos, seguimiento y solicitudes de seguimiento.
+Se encarga de verificar las acciones entre usuarios: bloqueos, seguimiento y solicitudes de seguimiento.
 
 ## Importación
 
