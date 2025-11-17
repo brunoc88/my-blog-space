@@ -1,9 +1,10 @@
-import { Routes, Router } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
+import Layout from '@components/Layout'
 
 const App = () => {
   return (
     <Routes>
-      <Router path="" elemente={ }></Router>
+      <Route path="/" element={<Layout/>}/>
     </Routes>
   )
 }
