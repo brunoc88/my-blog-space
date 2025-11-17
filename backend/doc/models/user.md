@@ -46,7 +46,7 @@ Acciones:
 ### `pregunta`
 - **tipo:** `String`
 - **requerido:** Sí
-- **Descripción:** Pregunta secreta seleccionada desde un menú desplegable (<select>), utilizada para recuperación de contraseña.
+- **Descripción:** Pregunta secreta seleccionada desde un menú desplegable `(<select>)`, utilizada para recuperación de contraseña.
 
 ---
 
